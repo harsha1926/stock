@@ -1,0 +1,26 @@
+{
+  "app": {
+    "title": "స్టాక్",
+    "toolbar": {
+      "english": "ఇంగ్లీష్",
+      "telugu": "తెలుగు",
+      "change_lang": "భాష మార్చు"
+    },
+    "actions": {
+      "home": "హోమ్",
+      "generate_bills": "బిల్లులను రూపొందించండి",
+      "suppliers": "సరఫరాదారులు",
+      "customers": "వినియోగదారులు",
+      "products": "ఉత్పత్తులు",
+      "supplier_transactions": {
+        "label": "సరఫరాదారు లావాదేవీలు",
+        "supplier_transaction_create_title": "కొత్త సరఫరాదారు లావాదేవీని సృష్టించండి",
+        "supplier_label": "సరఫరాదారు",
+        "product_label": "ఉత్పత్తి",
+        "quantity_label": "మొత్తము",
+        "amount_label": "మొత్తం",
+        "transfer_type_label": "బదిలీ రకం"
+      }
+    }
+  }
+}

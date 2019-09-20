@@ -1,0 +1,48 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+
+# Products Data
+
+GET    /products                    controllers.ProductsController.index
+GET    /products/:id                controllers.ProductsController.read(id: Long)
+
+
+# Suppliers Data
+
+GET    /suppliers                    controllers.SuppliersController.index
+GET    /suppliers/:id                controllers.SuppliersController.read(id: Long)
+POST   /suppliers                    controllers.SuppliersController.create(request: Request)
+
+# Customers Data
+
+GET    /customers                    controllers.CustomersController.index
+GET    /customers/:id                controllers.CustomersController.read(id: Long)
+
+
+# FinancialTransaction Data
+
+GET    /financialTransactions                    controllers.FinancialTransactionController.index
+
+
+# Stock Data
+
+GET    /stock                    controllers.StockController.index
+GET    /stock/:id                controllers.StockController.read(id: Long)
+
+# SupplierTransaction Data
+
+GET    /supplierTransaction                    controllers.SupplierTransactionController.index
+
+# FinancialTransactionDetails Data
+
+GET    /financialTransactionDetails                    controllers.FinancialTransactionDetailsController.index
+
+# SupplierFinancialTransaction Data
+
+GET    /supplierFinancialTransaction                    controllers.SuppliersFinancialTransactionController.index
+
+
+
+

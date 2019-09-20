@@ -1,0 +1,27 @@
+{
+  "app": {
+    "title": "Stock",
+    "toolbar": {
+      "english": "English",
+      "telugu": "Telugu",
+      "change_lang": "Change Language"
+    },
+    "actions": {
+      "home": "Home",
+      "generate_bills": "Generate Bills",
+      "suppliers": "Suppliers",
+      "customers": "Customers",
+      "products": "Products",
+      "supplier_transactions": {
+        "label": "Supplier Transactions",
+        "supplier_transaction_create_title": "Create new supplier transaction",
+        "supplier_label": "Supplier",
+        "product_label": "Product",
+        "quantity_label": "Quantity",
+        "amount_label": "Amount",
+        "transfer_type_label": "Transfer Type",
+        "bill_number_label": "Bill Number"
+      }
+    }
+  }
+}
