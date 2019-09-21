@@ -7,9 +7,16 @@
           <v-layout>
             <v-dialog v-model="dialog" persistent max-width="600px">
               <template v-slot:activator="{ on }">
-                <v-btn fab color="primary" icon small v-on="on">
-                  <v-icon>add</v-icon>
-                </v-btn>
+                <v-flex hidden-xs-only>
+                  <v-btn fab color="primary" icon small v-on="on">
+                    <v-icon>add</v-icon>
+                  </v-btn>
+                </v-flex>
+                <v-flex hidden-sm-and-up>
+                  <v-btn fab fixed bottom right color="primary" icon small v-on="on">
+                    <v-icon>add</v-icon>
+                  </v-btn>
+                </v-flex>
               </template>
               <v-form v-model="valid" ref="form">
                 <v-card>
@@ -54,7 +61,7 @@
               </v-form>
             </v-dialog>
 
-            <v-layout justify-center>
+            <v-layout>
               <v-card-title class="title">{{ $t('app.actions.suppliers') }}</v-card-title>
             </v-layout>
           </v-layout>

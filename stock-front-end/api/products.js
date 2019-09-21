@@ -7,5 +7,8 @@ const getProducts = () => {
 const getProduct = id => {
   return axios.get(`/api/products/${id}`)
 }
+const postProduct = payload => {
+  return axios.post(`/api/products`, payload)
+}
 
-export { getProducts, getProduct }
+export { getProducts, getProduct, postProduct }

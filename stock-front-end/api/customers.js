@@ -7,5 +7,8 @@ const getCustomers = () => {
 const getCustomer = id => {
   return axios.get(`/api/customers/${id}`)
 }
+const postCustomer = payload => {
+  return axios.post(`/api/customers`, payload)
+}
 
-export { getCustomers, getCustomer }
+export { getCustomers, getCustomer, postCustomer }
