@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import play.libs.Json;
 
 public class Product {
+    private Long id;
     private String category;
     private String name;
 
-    public Product(String name, String category) {
+    public Product(Long id, String name, String category) {
+        this.id = id;
         this.name = name;
         this.category = category;
     }
@@ -31,6 +33,7 @@ public class Product {
 
     public JsonNode toJson() {
         ObjectNode json = Json.newObject();
+        json.put("id", this.id);
         json.put("name", this.name);
         json.put("category", this.category);
         return json;

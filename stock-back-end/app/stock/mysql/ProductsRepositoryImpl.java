@@ -27,7 +27,7 @@ public class ProductsRepositoryImpl implements ProductsRepository {
     public CompletableFuture<List<Product>> getProducts() throws CompletionException  {
         return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
             List<Product> products = new ArrayList<>();
-            String sql = "select name, category from products";
+            String sql = "select id, name, category from products";
             try(CallableStatement stmt = connection.prepareCall(sql)) {
                 ResultSet rs = stmt.executeQuery();
                 while(rs.next()) {
@@ -43,12 +43,12 @@ public class ProductsRepositoryImpl implements ProductsRepository {
     @Override
     public CompletableFuture<Product> getProduct(Long id) throws CompletionException  {
         return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
-            String sql = "SELECT NAME , CATEGORY  FROM PRODUCTS WHERE ID = ?";
+            String sql = "select id, name, category from products where id = ?";
             try(CallableStatement stmt = connection.prepareCall(sql)) {
                 stmt.setLong(1, id);
                 ResultSet rs = stmt.executeQuery();
                 if(rs.next()) {
-                    return deserializeProductDetail(rs);
+                    return deserializeProduct(rs);
                 } else {
                     return null;
                 }
@@ -57,17 +57,29 @@ public class ProductsRepositoryImpl implements ProductsRepository {
             }
         }));
     }
-
-    private Product deserializeProduct(ResultSet rs) throws SQLException {
-        String name = rs.getString("name");
-        String category = rs.getString("category");
-        return new Product(name, category);
+    @Override
+    public CompletableFuture<Boolean> addNewProduct(String name, String category) throws CompletionException {
+        return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
+            String sql = "insert into `products` (`name`, `category`, `modified_by`, " +
+                    "`modified_on`) VALUES (?, ?,?, now())";
+            try (CallableStatement stmt = connection.prepareCall(sql)) {
+                stmt.setString(1, name);
+                stmt.setString(2, category);
+                stmt.setString(3, "admin");
+                int rows = stmt.executeUpdate();
+                if(rows > 0)
+                    return true;
+                else
+                    return false;
+            } catch (CompletionException e) {
+                throw e;
+            }
+        }));
     }
-
-    private Product deserializeProductDetail(ResultSet rs) throws SQLException {
+    private Product deserializeProduct(ResultSet rs) throws SQLException {
+        Long id = rs.getLong("id");
         String name = rs.getString("name");
         String category = rs.getString("category");
-
-        return new Product(name, category);
+        return new Product(id, name, category);
     }
 }

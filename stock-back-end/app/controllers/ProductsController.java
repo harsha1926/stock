@@ -1,10 +1,12 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import models.Product;
 import play.libs.Json;
 import play.libs.concurrent.HttpExecutionContext;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 import stock.mysql.ProductsRepository;
 
@@ -45,4 +47,17 @@ public class ProductsController extends Controller {
         });
 
     }
+    public CompletableFuture<Result> create(Http.Request request) throws Exception {
+        JsonNode requestJson = request.body().asJson();
+        String name = requestJson.get("name").asText();
+        String category = requestJson.get("category").asText();
+
+        return this.productsRepository.addNewProduct(name, category).thenApplyAsync(isInserted -> {
+            return ok(Json.toJson(isInserted));
+        }, httpExecutionContext.current()).exceptionally(e -> {
+            e.printStackTrace();
+            return internalServerError(e.toString());
+        });
+    }
+
 }

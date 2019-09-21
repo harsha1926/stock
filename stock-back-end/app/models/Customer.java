@@ -5,26 +5,29 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import play.libs.Json;
 
 public class Customer {
+    private Long id;
     private String phone;
     private String name;
     private String reference;
     private String address;
     private String email;
 
-    public Customer(String name, String reference,String phone,String address) {
+    public Customer(Long id, String name, String reference,String phone,String address, String email) {
+        this.id = id;
         this.name = name;
         this.reference = reference;
         this.phone = phone;
         this.address = address;
+
 
     }
 
-    public Customer(String name, String reference, String phone, String address, String email) {
-        this.name = name;
-        this.reference = reference;
-        this.phone = phone;
-        this.address = address;
-        this.email = email;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getPhone() {
@@ -69,6 +72,7 @@ public class Customer {
 
     public JsonNode toJson() {
         ObjectNode json = Json.newObject();
+        json.put("id", this.id);
         json.put("name", this.name);
         json.put("reference", this.reference);
         json.put("phone", this.phone);

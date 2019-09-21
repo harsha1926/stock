@@ -19,6 +19,7 @@ public class Supplier {
         this.reference = reference;
         this.phone = phone;
         this.address = address;
+        this.email = email;
     }
 
     public Long getId() {

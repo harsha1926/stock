@@ -1,10 +1,12 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import models.Customer;
 import play.libs.Json;
 import play.libs.concurrent.HttpExecutionContext;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 import stock.mysql.CustomerRepository;
 
@@ -43,5 +45,20 @@ public class CustomersController extends Controller {
             return internalServerError(e.toString());
         });
 
+    }
+    public CompletableFuture<Result> create(Http.Request request) throws Exception {
+        JsonNode requestJson = request.body().asJson();
+        String name = requestJson.get("name").asText();
+        String reference = requestJson.hasNonNull("reference") ? requestJson.get("reference").asText(): "";
+        String address = requestJson.get("address").asText();
+        String phone = requestJson.get("phone").asText();
+        String email = requestJson.get("email").asText();
+
+        return this.customerRepository.addNewCustomer(name, reference, address, phone, email).thenApplyAsync(isInserted -> {
+            return ok(Json.toJson(isInserted));
+        }, httpExecutionContext.current()).exceptionally(e -> {
+            e.printStackTrace();
+            return internalServerError(e.toString());
+        });
     }
 }
