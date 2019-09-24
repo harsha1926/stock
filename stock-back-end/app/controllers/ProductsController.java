@@ -49,8 +49,15 @@ public class ProductsController extends Controller {
     }
     public CompletableFuture<Result> create(Http.Request request) throws Exception {
         JsonNode requestJson = request.body().asJson();
-        String name = requestJson.get("name").asText();
-        String category = requestJson.get("category").asText();
+        if(!requestJson.hasNonNull("name")) {
+            return CompletableFuture.completedFuture(internalServerError("Invalid name"));
+        }
+        if(!requestJson.hasNonNull("category")) {
+            return CompletableFuture.completedFuture(internalServerError("Invalid category"));
+        }
+
+        String name = requestJson.hasNonNull("name") ? requestJson.get("name").asText():"";
+        String category = requestJson.hasNonNull("category") ? requestJson.get("category").asText():"";
 
         return this.productsRepository.addNewProduct(name, category).thenApplyAsync(isInserted -> {
             return ok(Json.toJson(isInserted));

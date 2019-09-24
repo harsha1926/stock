@@ -14,28 +14,73 @@
               <v-form v-model="valid" ref="form">
                 <v-card>
                   <v-card-title>
-                    <span class="headline">Add new customer</span>
+                    <span class="headline">{{$t('app.actions.add_new_customer')}}</span>
                   </v-card-title>
                   <v-card-text>
                     <v-container grid-list-md>
                       <v-layout wrap>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field label="Name" v-model="name" required></v-text-field>
+                        <v-flex xs12 sm6 md6>
+                          <v-text-field
+                            :label="$t('app.actions.name')"
+                            v-model="name"
+                            :rules="[rules.required, rules.minLength, rules.maxNameLength]"
+                          ></v-text-field>
                         </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field label="Reference" v-model="reference"></v-text-field>
-                        </v-flex>
-                        <v-flex xs12>
-                          <v-text-field label="Address line 1" v-model="address1" required></v-text-field>
-                        </v-flex>
-                        <v-flex xs12>
-                          <v-text-field label="Address line 2" v-model="address2"></v-text-field>
+                        <v-flex xs12 sm6 md6>
+                          <v-text-field :label="$t('app.actions.reference')" v-model="reference"></v-text-field>
                         </v-flex>
                         <v-flex xs12>
-                          <v-text-field label="Email" v-model="email"></v-text-field>
+                          <v-text-field
+                            :label="$t('app.actions.address_1')"
+                            v-model="address1"
+                            :rules="[rules.required, rules.maxLength]"
+                          ></v-text-field>
                         </v-flex>
                         <v-flex xs12>
-                          <v-text-field label="Phone Number" v-model="phone" required></v-text-field>
+                          <v-text-field :label="$t('app.actions.address_2')" v-model="address2"></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md6>
+                          <v-autocomplete
+                            :label="$t('app.actions.country')"
+                            :rules="[rules.required]"
+                            :items="['Canada']"
+                          ></v-autocomplete>
+                        </v-flex>
+                        <v-flex xs12 sm6 md6>
+                          <v-autocomplete
+                            :label="$t('app.actions.state')"
+                            :rules="[rules.required]"
+                            :items="['Quebec']"
+                          ></v-autocomplete>
+                        </v-flex>
+                        <v-spacer></v-spacer>
+                        <v-flex xs12 sm6 md6>
+                          <v-autocomplete
+                            :label="$t('app.actions.city')"
+                            :rules="[rules.required]"
+                            :items="['Longueuil']"
+                          ></v-autocomplete>
+                        </v-flex>
+                        <v-flex xs12 sm6 md6>
+                          <v-autocomplete
+                            :label="$t('app.actions.postal_code')"
+                            :rules="[rules.required]"
+                            :items="['J4L4A8']"
+                          ></v-autocomplete>
+                        </v-flex>
+                        <v-flex xs12 sm6 md6>
+                          <v-text-field
+                            :label="$t('app.actions.email')"
+                            v-model="email"
+                            :rules="[rules.emailRule]"
+                          ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md6>
+                          <v-text-field
+                            :label=" $t('app.actions.phone')"
+                            v-model="phone"
+                            :rules="[rules.required]"
+                          ></v-text-field>
                         </v-flex>
                       </v-layout>
                     </v-container>
@@ -104,7 +149,21 @@ export default {
       address2: null,
       phone: null,
       email: null,
-      snackbar: false
+      country: null,
+      state: null,
+      city: null,
+      postalcode: null,
+      snackbar: false,
+      rules: {
+        required: v => !!v || 'Required field',
+        minLength: v =>
+          (v && v.length > 2) || 'Name should be minimum of 3 characters',
+        maxNameLength: v =>
+          (v && v.length <= 50) || 'Name should be maximun of 50 characters',
+        maxAddressLength: v =>
+          (v && v.length <= 50) || 'Name should be maximun of 50 characters',
+        emailRule: v => /.+@.+/.test(v) || 'E-mail must be valid'
+      }
     }
   },
   methods: {

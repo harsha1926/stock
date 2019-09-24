@@ -21,7 +21,18 @@
         "amount_label": "Amount",
         "transfer_type_label": "Transfer Type",
         "bill_number_label": "Bill Number"
-      }
+      },
+      "add_new_customer": "Add new customer",
+      "name": "Name",
+      "reference": "Reference",
+      "address_1": "Address line 1",
+      "address_2": "Address line 2",
+      "country": "Country",
+      "state": "State",
+      "city": "City",
+      "postal_code": "Postal Code",
+      "phone": "Phone Number",
+      "email": "Email"
     }
   }
 }

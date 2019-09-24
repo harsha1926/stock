@@ -48,10 +48,27 @@ public class CustomersController extends Controller {
     }
     public CompletableFuture<Result> create(Http.Request request) throws Exception {
         JsonNode requestJson = request.body().asJson();
-        String name = requestJson.get("name").asText();
+        if(!(requestJson.hasNonNull("name")
+                && requestJson.get("name").asText().length() > 3 &&
+                requestJson.get("name").asText().length() <= 50)) {
+            return CompletableFuture.completedFuture(internalServerError("Invalid name"));
+        }
+        if(!requestJson.hasNonNull("address")) {
+            return CompletableFuture.completedFuture(internalServerError("Invalid address"));
+        }
+        if(!(requestJson.hasNonNull("phone") && requestJson.get("phone").asText().length() ==10))
+        {
+            return CompletableFuture.completedFuture(internalServerError("Invalid phone"));
+        }
+        if(!(requestJson.hasNonNull("email") && requestJson.get("email").asText().matches
+                ("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$")))
+        {
+            return CompletableFuture.completedFuture(internalServerError("Invalid email"));
+        }
+        String name = requestJson.hasNonNull("name") ? requestJson.get("name").asText():"";
         String reference = requestJson.hasNonNull("reference") ? requestJson.get("reference").asText(): "";
-        String address = requestJson.get("address").asText();
-        String phone = requestJson.get("phone").asText();
+        String address = requestJson.hasNonNull("address") ? requestJson.get("address").asText():"";
+        String phone = requestJson.hasNonNull("phone") ? requestJson.get("phone").asText():"";
         String email = requestJson.get("email").asText();
 
         return this.customerRepository.addNewCustomer(name, reference, address, phone, email).thenApplyAsync(isInserted -> {

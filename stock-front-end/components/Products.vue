@@ -20,10 +20,14 @@
                     <v-container grid-list-md>
                       <v-layout wrap>
                         <v-flex xs12>
-                          <v-text-field label="Name" v-model="name" required></v-text-field>
+                          <v-text-field label="Name" v-model="name" :rules="[rules.required]"></v-text-field>
                         </v-flex>
                         <v-flex xs12>
-                          <v-text-field label="Category" v-model="category" required></v-text-field>
+                          <v-text-field
+                            label="Category"
+                            v-model="category"
+                            :rules="[rules.required]"
+                          ></v-text-field>
                         </v-flex>
                       </v-layout>
                     </v-container>
@@ -80,7 +84,10 @@ export default {
       valid: false,
       name: null,
       category: null,
-      snackbar: false
+      snackbar: false,
+      rules: {
+        required: v => !!v || 'Required field'
+      }
     }
   },
   methods: {

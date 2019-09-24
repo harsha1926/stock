@@ -20,7 +20,18 @@
         "quantity_label": "మొత్తము",
         "amount_label": "మొత్తం",
         "transfer_type_label": "బదిలీ రకం"
-      }
+      },
+      "add_new_customer": "క్రొత్త కస్టమర్‌ను జోడించండి",
+      "name": "పేరు",
+      "reference": "సూచన",
+      "address_1": "చిరునామా పంక్తి 1",
+      "address_2": "చిరునామా పంక్తి 2",
+      "country": "దేశం",
+      "state": "రాష్ట్రం",
+      "city": "నగరం",
+      "postal_code": "పోస్టల్ కోడ్",
+      "phone": "ఫోను నంబరు",
+      "email": "ఇమెయిల్"
     }
   }
 }
