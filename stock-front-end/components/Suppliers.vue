@@ -166,14 +166,18 @@ export default {
       postalcode: null,
       snackbar: false,
       rules: {
-        required: v => !!v || 'Required field',
-        minLength: v =>
-          (v && v.length > 2) || 'Name should be minimum of 3 characters',
+        required: v => !!v || this.$t('app.actions.validations.required'),
+        minNameLength: v =>
+          (v && v.length > 2) ||
+          this.$t('app.actions.validations.min_name_length'),
         maxNameLength: v =>
-          (v && v.length <= 50) || 'Name should be maximun of 50 characters',
+          (v && v.length <= 50) ||
+          this.$t('app.actions.validations.max_name_length'),
         maxAddressLength: v =>
-          (v && v.length <= 50) || 'Name should be maximun of 50 characters',
-        emailRule: v => /.+@.+/.test(v) || 'E-mail must be valid'
+          (v && v.length <= 50) ||
+          this.$t('app.actions.validations.max_address_length'),
+        emailRule: v =>
+          /.+@.+/.test(v) || this.$t('app.actions.validations.email')
       }
     }
   },

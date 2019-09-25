@@ -23,7 +23,8 @@
                           <v-text-field
                             :label="$t('app.actions.name')"
                             v-model="name"
-                            :rules="[rules.required, rules.minLength, rules.maxNameLength]"
+                            :rules="[rules.required, rules.minNameLength, rules.maxNameLength]"
+                            counter="50"
                           ></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md6>
@@ -34,6 +35,7 @@
                             :label="$t('app.actions.address_1')"
                             v-model="address1"
                             :rules="[rules.required, rules.maxLength]"
+                            counter="50"
                           ></v-text-field>
                         </v-flex>
                         <v-flex xs12>
@@ -155,14 +157,18 @@ export default {
       postalcode: null,
       snackbar: false,
       rules: {
-        required: v => !!v || 'Required field',
-        minLength: v =>
-          (v && v.length > 2) || 'Name should be minimum of 3 characters',
+        required: v => !!v || this.$t('app.actions.validations.required'),
+        minNameLength: v =>
+          (v && v.length > 2) ||
+          this.$t('app.actions.validations.min_name_length'),
         maxNameLength: v =>
-          (v && v.length <= 50) || 'Name should be maximun of 50 characters',
+          (v && v.length <= 50) ||
+          this.$t('app.actions.validations.max_name_length'),
         maxAddressLength: v =>
-          (v && v.length <= 50) || 'Name should be maximun of 50 characters',
-        emailRule: v => /.+@.+/.test(v) || 'E-mail must be valid'
+          (v && v.length <= 50) ||
+          this.$t('app.actions.validations.max_address_length'),
+        emailRule: v =>
+          /.+@.+/.test(v) || this.$t('app.actions.validations.email')
       }
     }
   },

@@ -32,7 +32,14 @@
       "city": "City",
       "postal_code": "Postal Code",
       "phone": "Phone Number",
-      "email": "Email"
+      "email": "Email",
+      "validations": {
+        "required": "Required Field",
+        "min_name_length": "Name should be minimum of 3 characters",
+        "max_name_length": "Name should be maximun of 50 characters",
+        "max_address_length": "Name should be maximun of 50 characters",
+        "email": "E-mail must be valid"
+      }
     }
   }
 }
