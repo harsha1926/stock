@@ -8,6 +8,7 @@
 GET    /products                    controllers.ProductsController.index
 GET    /products/:id                controllers.ProductsController.read(id: Long)
 POST   /products                    controllers.ProductsController.create(request: Request)
+DELETE /products/:id                controllers.ProductsController.delete(id: Long)
 
 
 # Suppliers Data
@@ -15,12 +16,17 @@ POST   /products                    controllers.ProductsController.create(reques
 GET    /suppliers                    controllers.SuppliersController.index
 GET    /suppliers/:id                controllers.SuppliersController.read(id: Long)
 POST   /suppliers                    controllers.SuppliersController.create(request: Request)
+DELETE /suppliers/:id                controllers.SuppliersController.delete(id: Long)
+PUT   /suppliers/:id                controllers.SuppliersController.update(request: Request, id: Long)
+
+
 
 # Customers Data
 
 GET    /customers                    controllers.CustomersController.index
 GET    /customers/:id                controllers.CustomersController.read(id: Long)
 POST   /customers                    controllers.CustomersController.create(request: Request)
+DELETE /customers/:id                controllers.CustomersController.delete(id: Long)
 
 
 # FinancialTransaction Data

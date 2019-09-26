@@ -11,15 +11,24 @@ public class Supplier {
     private String name;
     private String address;
     private String email;
+    private String country;
+    private String state;
+    private String city;
+    private String postal_code;
 
 
-    public Supplier(Long id, String name, String reference, String phone, String address, String email) {
+
+    public Supplier(Long id, String name, String reference, String phone, String address, String email, String country, String state, String city, String postal_code ) {
         this.id = id;
         this.name = name;
         this.reference = reference;
         this.phone = phone;
         this.address = address;
         this.email = email;
+        this.reference = country;
+        this.phone = state;
+        this.address = city;
+        this.email = postal_code;
     }
 
     public Long getId() {
@@ -70,6 +79,38 @@ public class Supplier {
         this.email = email;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getPostal_code() {
+        return postal_code;
+    }
+
+    public void setPostal_code(String postal_code) {
+        this.postal_code = postal_code;
+    }
+
     public JsonNode toJson() {
         ObjectNode json = Json.newObject();
         json.put("id", this.id);
@@ -78,6 +119,11 @@ public class Supplier {
         json.put("phone", this.phone);
         json.put("address", this.address);
         json.put("email", this.email);
+        json.put("email", this.country);
+        json.put("email", this.state);
+        json.put("email", this.city);
+        json.put("email", this.postal_code);
+
         return json;
     }
 }

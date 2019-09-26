@@ -48,12 +48,21 @@ public class SuppliersController extends Controller {
         });
 
     }
+    public CompletableFuture<Result> delete(Long id) throws Exception {
+        return this.supplierRepository.deleteSupplier(id).thenApplyAsync(isDeleted -> {
+            return ok(Json.toJson(isDeleted));
+        }, httpExecutionContext.current()).exceptionally(e -> {
+            e.printStackTrace();
+            return internalServerError(e.toString());
+        });
+
+    }
 
     public CompletableFuture<Result> create(Http.Request request) throws Exception {
         JsonNode requestJson = request.body().asJson();
 
         //if valid save in database else throw error
-        if(!(requestJson.hasNonNull("name")
+         if(!(requestJson.hasNonNull("name")
                 && requestJson.get("name").asText().length() > 3 &&
                 requestJson.get("name").asText().length() <= 50)) {
             return CompletableFuture.completedFuture(internalServerError("Invalid name"));
@@ -78,13 +87,37 @@ public class SuppliersController extends Controller {
         String address = requestJson.hasNonNull("address") ? requestJson.get("address").asText():"";
         String phone = requestJson.hasNonNull("phone") ? requestJson.get("phone").asText():"";
         String email = requestJson.get("email").asText();
+        String country = requestJson.hasNonNull("country") ? requestJson.get("country").asText():"";
+        String state = requestJson.hasNonNull("state") ? requestJson.get("state").asText():"";
+        String city = requestJson.hasNonNull("city") ? requestJson.get("city").asText():"";
+        String postal_code = requestJson.hasNonNull("postal_code") ? requestJson.get("postal_code").asText():"";
 
-        return this.supplierRepository.addNewSupplier(name, reference, address, phone, email).thenApplyAsync(isInserted -> {
+        return this.supplierRepository.addNewSupplier(name, reference, address, phone, email, country, state, city, postal_code ).thenApplyAsync(isInserted -> {
             return ok(Json.toJson(isInserted));
         }, httpExecutionContext.current()).exceptionally(e -> {
             e.printStackTrace();
             return internalServerError(e.toString());
         });
+    }
+    public CompletableFuture<Result> update(Http.Request request,Long id) throws Exception {
+        JsonNode requestJson =  request.body().asJson();
+        String name = requestJson.get("name").asText();
+        String reference =requestJson.get("reference").asText();
+        String address = requestJson.get("address").asText();
+        String phone = requestJson.get("phone").asText();
+        String email = requestJson.get("email").asText();
+        String country = requestJson.get("country").asText();
+        String state = requestJson.get("state").asText();
+        String city = requestJson.get("city").asText();
+        String postal_code = requestJson.get("postal_code").asText();
+
+        return this.supplierRepository.updateSupplier(id, name, reference, address, phone, email, country, state, city, postal_code).thenApplyAsync(isUpdated -> {
+            return ok(Json.toJson(isUpdated));
+        }, httpExecutionContext.current()).exceptionally(e -> {
+            e.printStackTrace();
+            return internalServerError(e.toString());
+        });
+
     }
 
 }
