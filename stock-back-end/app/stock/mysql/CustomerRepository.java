@@ -10,4 +10,5 @@ public interface CustomerRepository {
     public CompletableFuture<Customer> getCustomer(Long id) throws Exception;
     public CompletableFuture<Boolean> addNewCustomer(String name, String reference, String address, String phone,
                                                      String email) throws Exception;
+    public CompletableFuture<Boolean> deleteCustomer(Long id) throws Exception;
 }

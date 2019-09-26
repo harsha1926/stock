@@ -46,6 +46,7 @@ public class CustomersController extends Controller {
         });
 
     }
+
     public CompletableFuture<Result> create(Http.Request request) throws Exception {
         JsonNode requestJson = request.body().asJson();
         if(!(requestJson.hasNonNull("name")
@@ -77,5 +78,14 @@ public class CustomersController extends Controller {
             e.printStackTrace();
             return internalServerError(e.toString());
         });
+    }
+    public CompletableFuture<Result> delete(Long id) throws Exception {
+        return this.customerRepository.deleteCustomer(id).thenApplyAsync(isDeleted -> {
+            return ok(Json.toJson(isDeleted));
+        }, httpExecutionContext.current()).exceptionally(e -> {
+            e.printStackTrace();
+            return internalServerError(e.toString());
+        });
+
     }
 }

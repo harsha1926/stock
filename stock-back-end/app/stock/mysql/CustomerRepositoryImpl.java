@@ -79,6 +79,24 @@ public class CustomerRepositoryImpl implements CustomerRepository{
             }
         }));
     }
+    @Override
+    public CompletableFuture<Boolean> deleteCustomer(Long id) throws CompletionException{
+        return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
+            String sql ="delete from customers where id = ? ";
+            try(CallableStatement stmt = connection.prepareCall(sql)){
+                stmt.setLong(1, id);
+                int rows = stmt.executeUpdate();
+                if(rows > 0)
+                    return true;
+                else
+                    return false;
+            }
+            catch (CompletionException e) {
+                throw e;
+            }
+        }));
+
+    }
 
         private Customer deserializeCustomer(ResultSet rs) throws SQLException {
             Long id = rs.getLong("id");

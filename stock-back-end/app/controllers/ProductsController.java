@@ -66,5 +66,14 @@ public class ProductsController extends Controller {
             return internalServerError(e.toString());
         });
     }
+    public CompletableFuture<Result> delete(Long id) throws Exception {
+        return this.productsRepository.deleteProduct(id).thenApplyAsync(isDeleted -> {
+            return ok(Json.toJson(isDeleted));
+        }, httpExecutionContext.current()).exceptionally(e -> {
+            e.printStackTrace();
+            return internalServerError(e.toString());
+        });
+
+    }
 
 }

@@ -76,6 +76,24 @@ public class ProductsRepositoryImpl implements ProductsRepository {
             }
         }));
     }
+    @Override
+    public CompletableFuture<Boolean> deleteProduct(Long id) throws CompletionException{
+        return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
+            String sql ="delete from products where id = ? ";
+            try(CallableStatement stmt = connection.prepareCall(sql)){
+                stmt.setLong(1, id);
+                int rows = stmt.executeUpdate();
+                if(rows > 0)
+                    return true;
+                else
+                    return false;
+            }
+            catch (CompletionException e) {
+                throw e;
+            }
+        }));
+
+    }
     private Product deserializeProduct(ResultSet rs) throws SQLException {
         Long id = rs.getLong("id");
         String name = rs.getString("name");

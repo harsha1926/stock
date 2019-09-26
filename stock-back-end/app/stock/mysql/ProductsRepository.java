@@ -10,4 +10,5 @@ public interface ProductsRepository {
     public CompletableFuture<List<Product>> getProducts() throws Exception;
     public CompletableFuture<Product> getProduct(Long id) throws Exception;
     public CompletableFuture<Boolean> addNewProduct(String name, String category) throws Exception;
+    public CompletableFuture<Boolean> deleteProduct(Long id) throws Exception;
 }
