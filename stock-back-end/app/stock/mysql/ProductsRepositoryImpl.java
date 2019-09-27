@@ -7,6 +7,7 @@ import play.db.NamedDatabase;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.sql.CallableStatement;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class ProductsRepositoryImpl implements ProductsRepository {
     public CompletableFuture<List<Product>> getProducts() throws CompletionException  {
         return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
             List<Product> products = new ArrayList<>();
-            String sql = "select id, name, category from products";
+            String sql = "select id, name, category, modified_by, modified_on from products";
             try(CallableStatement stmt = connection.prepareCall(sql)) {
                 ResultSet rs = stmt.executeQuery();
                 while(rs.next()) {
@@ -43,7 +44,7 @@ public class ProductsRepositoryImpl implements ProductsRepository {
     @Override
     public CompletableFuture<Product> getProduct(Long id) throws CompletionException  {
         return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
-            String sql = "select id, name, category from products where id = ?";
+            String sql = "select id, name, category, modified_by, modified_on from products where id = ?";
             try(CallableStatement stmt = connection.prepareCall(sql)) {
                 stmt.setLong(1, id);
                 ResultSet rs = stmt.executeQuery();
@@ -94,10 +95,33 @@ public class ProductsRepositoryImpl implements ProductsRepository {
         }));
 
     }
+    @Override
+    public CompletableFuture<Boolean> updateProduct(Long id, String name, String category) throws CompletionException{
+        return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
+            String sql ="update products set name=?, category=?, modified_by=?, modified_on=now()  where id = ?;";
+            try(CallableStatement stmt = connection.prepareCall(sql)){
+                stmt.setString(1, name);
+                stmt.setString(2, category);
+                stmt.setString(3,"admin");
+                stmt.setLong(4, id);
+                int rows = stmt.executeUpdate();
+                if(rows > 0)
+                    return true;
+                else
+                    return false;
+            }
+            catch (CompletionException e) {
+                throw e;
+            }
+        }));
+
+    }
     private Product deserializeProduct(ResultSet rs) throws SQLException {
         Long id = rs.getLong("id");
         String name = rs.getString("name");
         String category = rs.getString("category");
-        return new Product(id, name, category);
+        String modified_by = rs.getString("modified_by");
+        Date modified_on = rs.getDate("modified_on");
+        return new Product(id, name, category, modified_by, modified_on );
     }
 }

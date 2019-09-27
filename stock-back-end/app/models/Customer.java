@@ -16,11 +16,11 @@ public class Customer {
     private String country;
     private String state;
     private String city;
-    private String postal_code;
+    private String postalCode;
     private String modified_by;
     private Date modified_on;
 
-    public Customer(Long id, String name, String reference,String phone,String address, String email, String country, String state, String city, String postal_code, String modified_by, Date modified_on ) {
+    public Customer(Long id, String name, String reference,String phone,String address, String email, String country, String state, String city, String postalCode, String modified_by, Date modified_on ) {
         this.id = id;
         this.name = name;
         this.reference = reference;
@@ -30,7 +30,7 @@ public class Customer {
         this.country = country;
         this.state = state;
         this.city = city;
-        this.postal_code = postal_code;
+        this.postalCode = postalCode;
         this.modified_by = modified_by;
         this.modified_on = modified_on;
 
@@ -108,12 +108,12 @@ public class Customer {
         this.city = city;
     }
 
-    public String getPostal_code() {
-        return postal_code;
+    public String getPostalCode() {
+        return postalCode;
     }
 
-    public void setPostal_code(String postal_code) {
-        this.postal_code = postal_code;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getModified_by() {
@@ -143,7 +143,7 @@ public class Customer {
         json.put("country", this.country);
         json.put("state", this.state);
         json.put("city", this.city);
-        json.put("postal_code", this.postal_code);
+        json.put("postal_code", this.postalCode);
         json.put("modified_by", this.modified_by);
         json.put("modified_on", this.modified_on != null ? this.modified_on.toString() : "");
         return json;

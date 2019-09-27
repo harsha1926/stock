@@ -103,7 +103,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     }
     @Override
     public CompletableFuture<Boolean> updateCustomer(Long id, String name, String reference, String address, String phone,
-                                                     String email, String country, String state, String city, String postal_code) throws CompletionException{
+                                                     String email, String country, String state, String city, String postalCode) throws CompletionException{
         return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
             String sql ="update customers set name=?, reference=?, address= ?, phone=?, email=?, country=?, state=?, city=?, postal_code=?, modified_by=?, modified_on=now()  where id = ?;";
             try(CallableStatement stmt = connection.prepareCall(sql)){
@@ -115,7 +115,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
                 stmt.setString(6, country);
                 stmt.setString(7, state);
                 stmt.setString(8, city);
-                stmt.setString(9, postal_code);
+                stmt.setString(9, postalCode);
                 stmt.setString(10,"admin");
                 stmt.setLong(11, id);
                 int rows = stmt.executeUpdate();
@@ -142,9 +142,9 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         String country = rs.getString("country");
         String state = rs.getString("state");
         String city = rs.getString("city");
-        String postal_code = rs.getString("postal_code");
+        String postalCode = rs.getString("postalCode");
         String modified_by = rs.getString("modified_by");
         Date modified_on = rs.getDate("modified_on");
-            return new Customer(id, name, reference, phone, address, email, country, state, city, postal_code, modified_by, modified_on);
+            return new Customer(id, name, reference, phone, address, email, country, state, city, postalCode, modified_by, modified_on);
         }
 }

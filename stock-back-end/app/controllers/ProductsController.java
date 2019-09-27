@@ -75,5 +75,19 @@ public class ProductsController extends Controller {
         });
 
     }
+    public CompletableFuture<Result> update(Http.Request request, Long id) throws Exception {
+        JsonNode requestJson =  request.body().asJson();
+        String name = requestJson.get("name").asText();
+        String category =requestJson.get("category").asText();
+
+
+        return this.productsRepository.updateProduct(id,name, category).thenApplyAsync(isUpdated -> {
+            return ok(Json.toJson(isUpdated));
+        }, httpExecutionContext.current()).exceptionally(e -> {
+            e.printStackTrace();
+            return internalServerError(e.toString());
+        });
+
+    }
 
 }

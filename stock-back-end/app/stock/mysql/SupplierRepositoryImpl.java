@@ -147,9 +147,9 @@ public class SupplierRepositoryImpl implements SupplierRepository {
         String country = rs.getString("country");
         String state = rs.getString("state");
         String city = rs.getString("city");
-        String postal_code = rs.getString("postal_code");
+        String postalCode = rs.getString("postalCode");
         String modified_by = rs.getString("modified_by");
         Date modified_on = rs.getDate("modified_on");
-        return new Supplier(id, name, reference, phone, address, email, country, state, city, postal_code, modified_by, modified_on);
+        return new Supplier(id, name, reference, phone, address, email, country, state, city, postalCode, modified_by, modified_on);
     }
 }
