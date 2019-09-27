@@ -122,8 +122,8 @@ public class SupplierRepositoryImpl implements SupplierRepository {
                 stmt.setString(7, state);
                 stmt.setString(8, city);
                 stmt.setString(9, postal_code);
-                stmt.setLong(10, id);
-                stmt.setString(11,"admin");
+                stmt.setString(10,"admin");
+                stmt.setLong(11, id);
                 int rows = stmt.executeUpdate();
                 if(rows > 0)
                     return true;
