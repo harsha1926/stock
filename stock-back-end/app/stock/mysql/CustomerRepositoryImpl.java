@@ -142,7 +142,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         String country = rs.getString("country");
         String state = rs.getString("state");
         String city = rs.getString("city");
-        String postalCode = rs.getString("postalCode");
+        String postalCode = rs.getString("postal_code");
         String modified_by = rs.getString("modified_by");
         Date modified_on = rs.getDate("modified_on");
             return new Customer(id, name, reference, phone, address, email, country, state, city, postalCode, modified_by, modified_on);
