@@ -66,13 +66,29 @@ public class CustomersController extends Controller {
         {
             return CompletableFuture.completedFuture(internalServerError("Invalid email"));
         }
+        if(!requestJson.hasNonNull("country")) {
+            return CompletableFuture.completedFuture(internalServerError("Invalid country"));
+        }
+        if(!requestJson.hasNonNull("state")) {
+            return CompletableFuture.completedFuture(internalServerError("Invalid state"));
+        }
+        if(!requestJson.hasNonNull("city")) {
+            return CompletableFuture.completedFuture(internalServerError("Invalid city"));
+        }
+        if(!requestJson.hasNonNull("postalCode")) {
+            return CompletableFuture.completedFuture(internalServerError("Invalid postalCode"));
+        }
         String name = requestJson.hasNonNull("name") ? requestJson.get("name").asText():"";
         String reference = requestJson.hasNonNull("reference") ? requestJson.get("reference").asText(): "";
         String address = requestJson.hasNonNull("address") ? requestJson.get("address").asText():"";
         String phone = requestJson.hasNonNull("phone") ? requestJson.get("phone").asText():"";
         String email = requestJson.get("email").asText();
+        String country = requestJson.hasNonNull("country") ? requestJson.get("country").asText():"";
+        String state = requestJson.hasNonNull("state") ? requestJson.get("state").asText():"";
+        String city = requestJson.hasNonNull("city") ? requestJson.get("city").asText():"";
+        String postalCode = requestJson.hasNonNull("postalCode") ? requestJson.get("postalCode").asText():"";
 
-        return this.customerRepository.addNewCustomer(name, reference, address, phone, email).thenApplyAsync(isInserted -> {
+        return this.customerRepository.addNewCustomer(name, reference, address, phone, email,  country, state, city, postalCode ).thenApplyAsync(isInserted -> {
             return ok(Json.toJson(isInserted));
         }, httpExecutionContext.current()).exceptionally(e -> {
             e.printStackTrace();
@@ -82,6 +98,26 @@ public class CustomersController extends Controller {
     public CompletableFuture<Result> delete(Long id) throws Exception {
         return this.customerRepository.deleteCustomer(id).thenApplyAsync(isDeleted -> {
             return ok(Json.toJson(isDeleted));
+        }, httpExecutionContext.current()).exceptionally(e -> {
+            e.printStackTrace();
+            return internalServerError(e.toString());
+        });
+
+    }
+    public CompletableFuture<Result> update(Http.Request request, Long id) throws Exception {
+        JsonNode requestJson =  request.body().asJson();
+        String name = requestJson.get("name").asText();
+        String reference =requestJson.get("reference").asText();
+        String address = requestJson.get("address").asText();
+        String phone = requestJson.get("phone").asText();
+        String email = requestJson.get("email").asText();
+        String country = requestJson.get("country").asText();
+        String state = requestJson.get("state").asText();
+        String city = requestJson.get("city").asText();
+        String postalCode = requestJson.get("postalCode").asText();
+
+        return this.customerRepository.updateCustomer(id, name, reference, address, phone, email, country, state, city, postalCode).thenApplyAsync(isUpdated -> {
+            return ok(Json.toJson(isUpdated));
         }, httpExecutionContext.current()).exceptionally(e -> {
             e.printStackTrace();
             return internalServerError(e.toString());

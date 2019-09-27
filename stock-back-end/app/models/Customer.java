@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import play.libs.Json;
 
+import java.sql.Date;
+
 public class Customer {
     private Long id;
     private String phone;
@@ -11,14 +13,26 @@ public class Customer {
     private String reference;
     private String address;
     private String email;
+    private String country;
+    private String state;
+    private String city;
+    private String postal_code;
+    private String modified_by;
+    private Date modified_on;
 
-    public Customer(Long id, String name, String reference,String phone,String address, String email) {
+    public Customer(Long id, String name, String reference,String phone,String address, String email, String country, String state, String city, String postal_code, String modified_by, Date modified_on ) {
         this.id = id;
         this.name = name;
         this.reference = reference;
         this.phone = phone;
         this.address = address;
-
+        this.email = email;
+        this.country = country;
+        this.state = state;
+        this.city = city;
+        this.postal_code = postal_code;
+        this.modified_by = modified_by;
+        this.modified_on = modified_on;
 
     }
 
@@ -70,6 +84,54 @@ public class Customer {
         this.email = email;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getPostal_code() {
+        return postal_code;
+    }
+
+    public void setPostal_code(String postal_code) {
+        this.postal_code = postal_code;
+    }
+
+    public String getModified_by() {
+        return modified_by;
+    }
+
+    public void setModified_by(String modified_by) {
+        this.modified_by = modified_by;
+    }
+
+    public Date getModified_on() {
+        return modified_on;
+    }
+
+    public void setModified_on(Date modified_on) {
+        this.modified_on = modified_on;
+    }
+
     public JsonNode toJson() {
         ObjectNode json = Json.newObject();
         json.put("id", this.id);
@@ -78,7 +140,12 @@ public class Customer {
         json.put("phone", this.phone);
         json.put("address", this.address);
         json.put("email", this.email);
-
+        json.put("country", this.country);
+        json.put("state", this.state);
+        json.put("city", this.city);
+        json.put("postal_code", this.postal_code);
+        json.put("modified_by", this.modified_by);
+        json.put("modified_on", this.modified_on != null ? this.modified_on.toString() : "");
         return json;
     }
 }

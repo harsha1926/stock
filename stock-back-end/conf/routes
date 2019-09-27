@@ -7,8 +7,13 @@
 
 GET    /products                    controllers.ProductsController.index
 GET    /products/:id                controllers.ProductsController.read(id: Long)
++nocsrf
 POST   /products                    controllers.ProductsController.create(request: Request)
++nocsrf
 DELETE /products/:id                controllers.ProductsController.delete(id: Long)
++nocsrf
+PUT   /products/:id                controllers.ProductsController.update(request: Request, id: Long)
+
 
 
 # Suppliers Data
@@ -28,9 +33,12 @@ PUT   /suppliers/:id                controllers.SuppliersController.update(reque
 
 GET    /customers                    controllers.CustomersController.index
 GET    /customers/:id                controllers.CustomersController.read(id: Long)
++nocsrf
 POST   /customers                    controllers.CustomersController.create(request: Request)
++nocsrf
 DELETE /customers/:id                controllers.CustomersController.delete(id: Long)
-
++nocsrf
+PUT   /customers/:id                controllers.CustomersController.update(request: Request, id: Long)
 
 # FinancialTransaction Data
 
