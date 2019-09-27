@@ -15,8 +15,11 @@ DELETE /products/:id                controllers.ProductsController.delete(id: Lo
 
 GET    /suppliers                    controllers.SuppliersController.index
 GET    /suppliers/:id                controllers.SuppliersController.read(id: Long)
++nocsrf
 POST   /suppliers                    controllers.SuppliersController.create(request: Request)
++nocsrf
 DELETE /suppliers/:id                controllers.SuppliersController.delete(id: Long)
++nocsrf
 PUT   /suppliers/:id                controllers.SuppliersController.update(request: Request, id: Long)
 
 
