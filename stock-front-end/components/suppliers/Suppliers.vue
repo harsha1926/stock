@@ -56,7 +56,7 @@
                   </v-list-tile-content>
 
                   <v-list-tile-avatar>
-                    <v-icon color="primary" v-on="on">phone</v-icon>
+                    <v-icon color="primary" v-on="on" @click="'tel:' + supplier.phone">phone</v-icon>
                   </v-list-tile-avatar>
 
                   <v-list-tile-avatar>
@@ -67,7 +67,11 @@
                       <v-list>
                         <v-list-tile key="email">
                           <v-list-tile-avatar>
-                            <v-icon color="primary" v-on="on">email</v-icon>
+                            <v-icon
+                              color="primary"
+                              v-on="on"
+                              @click="'mailto:'+supplier.email"
+                            >email</v-icon>
                           </v-list-tile-avatar>
                         </v-list-tile>
                         <v-list-tile key="edit">
