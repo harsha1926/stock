@@ -90,7 +90,7 @@
         </v-card>
       </v-form>
     </v-dialog>
-    <v-snackbar bottom color="primary" v-model="snackbar">{{ successMessage }}</v-snackbar>
+    <v-snackbar bottom color="primary" :value="snackbar">{{ successMessage }}</v-snackbar>
   </div>
 </template>
 

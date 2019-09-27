@@ -2,7 +2,7 @@
   <v-container fluid ma-0 pa-0>
     <v-flex xs12 sm12 md6 offset-md3 la4 offset-la4 xl4 offset-xl4>
       <v-card>
-        <v-layout>
+        <v-layout pt-3>
           <supplier-form
             :dialog="showCreateDialog"
             @dialog-closed="showCreateDialog = false"
