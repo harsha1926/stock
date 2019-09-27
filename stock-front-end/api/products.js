@@ -13,5 +13,8 @@ const postProduct = payload => {
 const deleteProduct = id => {
   return axios.delete(`/api/suppliers/${id}`)
 }
+const putProduct = payload => {
+  return axios.put(`/api/products/${payload.id}`, payload)
+}
 
-export { getProducts, getProduct, postProduct, deleteProduct }
+export { getProducts, getProduct, postProduct, deleteProduct, putProduct }
