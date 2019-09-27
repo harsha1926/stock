@@ -29,7 +29,7 @@ public class SupplierRepositoryImpl implements SupplierRepository {
     public CompletableFuture<List<Supplier>> getSuppliers() throws CompletionException {
         return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
             List<Supplier> suppliers = new ArrayList<>();
-            String sql = "select id, name, reference, address, email, phone, country, state, city, postal_code from suppliers";
+            String sql = "select id, name, reference, address, email, phone, modified_by, modified_on, country, state, city, postal_code from suppliers";
             try(CallableStatement stmt = connection.prepareCall(sql)) {
                 ResultSet rs = stmt.executeQuery();
                 while(rs.next()) {
@@ -44,7 +44,7 @@ public class SupplierRepositoryImpl implements SupplierRepository {
     @Override
     public CompletableFuture<Supplier> getSupplier(Long id) throws CompletionException  {
         return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
-            String sql = "select id, name, reference, address, email, phone from suppliers where id = ?";
+            String sql = "select id, name, reference, address, email, phone, modified_by, modified_on, country, state, city, postal_code from suppliers where id = ?";
             try(CallableStatement stmt = connection.prepareCall(sql)) {
                 stmt.setLong(1, id);
                 ResultSet rs = stmt.executeQuery();
@@ -111,19 +111,19 @@ public class SupplierRepositoryImpl implements SupplierRepository {
     public CompletableFuture<Boolean> updateSupplier(Long id, String name, String reference, String address, String phone,
                                                      String email, String country, String state, String city, String postal_code) throws CompletionException{
         return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
-            String sql ="update suppliers set name=?, reference=?, address= ?, phone=?, email=?, country=?, state=?, city=?, postal_code=?  where id = ?;";
+            String sql ="update suppliers set name=?, reference=?, address= ?, phone=?, email=?, country=?, state=?, city=?, postal_code=?, modified_by=?, modified_on=now()  where id = ?;";
             try(CallableStatement stmt = connection.prepareCall(sql)){
-                stmt.setLong(1, id);
-                stmt.setString(2, name);
-                stmt.setString(3, reference);
-                stmt.setString(4, address);
-                stmt.setString(5, phone);
-                stmt.setString(6, email);
-
-                stmt.setString(7, country);
-                stmt.setString(8, state);
-                stmt.setString(9, city);
-                stmt.setString(10, postal_code);
+                stmt.setString(1, name);
+                stmt.setString(2, reference);
+                stmt.setString(3, address);
+                stmt.setString(4, phone);
+                stmt.setString(5, email);
+                stmt.setString(6, country);
+                stmt.setString(7, state);
+                stmt.setString(8, city);
+                stmt.setString(9, postal_code);
+                stmt.setLong(10, id);
+                stmt.setString(11,"admin");
                 int rows = stmt.executeUpdate();
                 if(rows > 0)
                     return true;
@@ -148,6 +148,8 @@ public class SupplierRepositoryImpl implements SupplierRepository {
         String state = rs.getString("state");
         String city = rs.getString("city");
         String postal_code = rs.getString("postal_code");
-        return new Supplier(id, name, reference, phone, address, email, country, state, city, postal_code);
+        String modified_by = rs.getString("modified_by");
+        Date modified_on = rs.getDate("modified_on");
+        return new Supplier(id, name, reference, phone, address, email, country, state, city, postal_code, modified_by, modified_on);
     }
 }

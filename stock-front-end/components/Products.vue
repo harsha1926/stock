@@ -64,6 +64,17 @@
                       <span class="caption">{{ product.category }}</span>
                     </v-list-tile-title>
                   </v-list-tile-content>
+
+                  <v-list-tile-avatar>
+                    <v-icon
+                      color="primary"
+                      @click="deleteSelectedProduct(supplier.id)"
+                      v-on="on"
+                    >delete</v-icon>
+                  </v-list-tile-avatar>
+                  <v-list-tile-avatar>
+                    <v-icon color="primary">edit</v-icon>
+                  </v-list-tile-avatar>
                 </v-list-tile>
               </v-list>
             </v-layout>
@@ -109,6 +120,18 @@ export default {
             console.error(error)
           })
       }
+    },
+    deleteSelectedProduct: function(id) {
+      deleteProduct(id)
+        .then(response => {
+          if (response.data) {
+            this.snackbar = true
+            this.dialog = false
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
     }
   },
   mounted: function() {

@@ -121,11 +121,22 @@
                     </v-list-tile-title>
                     <v-list-tile-sub-title>{{ customer.address }}</v-list-tile-sub-title>
                   </v-list-tile-content>
+
                   <v-list-tile-avatar>
-                    <v-icon>phone</v-icon>
+                    <v-icon color="primary">phone</v-icon>
                   </v-list-tile-avatar>
                   <v-list-tile-avatar>
-                    <v-icon>email</v-icon>
+                    <v-icon color="primary">email</v-icon>
+                  </v-list-tile-avatar>
+                  <v-list-tile-avatar>
+                    <v-icon
+                      color="primary"
+                      @click="deleteSelectedCustomer(customer.id)"
+                      v-on="on"
+                    >delete</v-icon>
+                  </v-list-tile-avatar>
+                  <v-list-tile-avatar>
+                    <v-icon color="primary">edit</v-icon>
                   </v-list-tile-avatar>
                 </v-list-tile>
               </v-list>
@@ -194,6 +205,18 @@ export default {
             console.error(error)
           })
       }
+    },
+    deleteSelectedCustomer: function(id) {
+      deleteCustomer(id)
+        .then(response => {
+          if (response.data) {
+            this.snackbar = true
+            this.dialog = false
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
     }
   },
   mounted: function() {

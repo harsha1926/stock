@@ -79,8 +79,18 @@ public class SuppliersController extends Controller {
         {
             return CompletableFuture.completedFuture(internalServerError("Invalid email"));
         }
-
-
+        if(!requestJson.hasNonNull("country")) {
+            return CompletableFuture.completedFuture(internalServerError("Invalid country"));
+        }
+        if(!requestJson.hasNonNull("state")) {
+            return CompletableFuture.completedFuture(internalServerError("Invalid state"));
+        }
+        if(!requestJson.hasNonNull("city")) {
+            return CompletableFuture.completedFuture(internalServerError("Invalid city"));
+        }
+        if(!requestJson.hasNonNull("postal_code")) {
+            return CompletableFuture.completedFuture(internalServerError("Invalid postal_code"));
+        }
 
         String name = requestJson.get("name").asText();
         String reference = requestJson.hasNonNull("reference") ? requestJson.get("reference").asText(): "";

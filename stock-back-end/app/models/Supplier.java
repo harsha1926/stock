@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import play.libs.Json;
 
+import java.sql.Date;
+
 public class Supplier {
     private Long id;
     private String phone;
@@ -15,20 +17,25 @@ public class Supplier {
     private String state;
     private String city;
     private String postal_code;
+    private String modified_by;
+    private Date modified_on;
 
 
 
-    public Supplier(Long id, String name, String reference, String phone, String address, String email, String country, String state, String city, String postal_code ) {
+
+    public Supplier(Long id, String name, String reference, String phone, String address, String email, String country, String state, String city, String postal_code, String modified_by, Date modified_on ) {
         this.id = id;
         this.name = name;
         this.reference = reference;
         this.phone = phone;
         this.address = address;
         this.email = email;
-        this.reference = country;
-        this.phone = state;
-        this.address = city;
-        this.email = postal_code;
+        this.country = country;
+        this.state = state;
+        this.city = city;
+        this.postal_code = postal_code;
+        this.modified_by = modified_by;
+        this.modified_on = modified_on;
     }
 
     public Long getId() {
@@ -111,6 +118,22 @@ public class Supplier {
         this.postal_code = postal_code;
     }
 
+    public String getModified_by() {
+        return modified_by;
+    }
+
+    public void setModified_by(String modified_by) {
+        this.modified_by = modified_by;
+    }
+
+    public Date getModified_on() {
+        return modified_on;
+    }
+
+    public void setModified_on(Date modified_on) {
+        this.modified_on = modified_on;
+    }
+
     public JsonNode toJson() {
         ObjectNode json = Json.newObject();
         json.put("id", this.id);
@@ -119,11 +142,12 @@ public class Supplier {
         json.put("phone", this.phone);
         json.put("address", this.address);
         json.put("email", this.email);
-        json.put("email", this.country);
-        json.put("email", this.state);
-        json.put("email", this.city);
-        json.put("email", this.postal_code);
-
+        json.put("country", this.country);
+        json.put("state", this.state);
+        json.put("city", this.city);
+        json.put("postal_code", this.postal_code);
+        json.put("modified_by", this.modified_by);
+        json.put("modified_on", this.modified_on != null ? this.modified_on.toString() : "");
         return json;
     }
 }
