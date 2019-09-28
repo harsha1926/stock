@@ -28,7 +28,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     public CompletableFuture<List<Customer>> getCustomers() throws CompletionException {
         return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
             List<Customer> customers = new ArrayList<>();
-            String sql = "select id, name, reference, phone, address,email from customers";
+            String sql = "select id, name, reference, phone, address, email, country, state, city, postal_code, modified_by, modified_on from customers";
             try(CallableStatement stmt = connection.prepareCall(sql)) {
                 ResultSet rs = stmt.executeQuery();
                 while(rs.next()) {
@@ -61,8 +61,8 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     public CompletableFuture<Boolean> addNewCustomer  (String name, String reference, String address, String phone,
                                                        String email, String country, String state, String city, String postal_code) throws CompletionException {
         return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
-            String sql = "insert into `customers` (`name`, `reference`, `address`, `phone`, `email`, `modified_by`, \" +\n" +
-                    "                    \"`modified_on`, country, state, city, postal_code) VALUES (?, ?, ?, ?, ?, ?, now(), ?, ?, ?, ?)";
+            String sql = "insert into customers (name, reference, address, phone, email, modified_by," +
+                    "modified_on, country, state, city, postal_code) VALUES (?, ?, ?, ?, ?, ?, now(), ?, ?, ?, ?)";
             try (CallableStatement stmt = connection.prepareCall(sql)) {
                 stmt.setString(1, name);
                 stmt.setString(2, reference);
@@ -139,12 +139,12 @@ public class CustomerRepositoryImpl implements CustomerRepository{
             String phone = rs.getString("phone");
             String address = rs.getString("address");
             String email = rs.getString("email");
-        String country = rs.getString("country");
-        String state = rs.getString("state");
-        String city = rs.getString("city");
-        String postalCode = rs.getString("postal_code");
-        String modified_by = rs.getString("modified_by");
-        Date modified_on = rs.getDate("modified_on");
+            String country = rs.getString("country");
+            String state = rs.getString("state");
+            String city = rs.getString("city");
+            String postalCode = rs.getString("postal_code");
+            String modified_by = rs.getString("modified_by");
+            Date modified_on = rs.getDate("modified_on");
             return new Customer(id, name, reference, phone, address, email, country, state, city, postalCode, modified_by, modified_on);
         }
 }
