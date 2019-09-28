@@ -23,7 +23,7 @@
                   <v-text-field
                     label="Address line 1"
                     v-model="address1"
-                    :rules="[rules.required, rules.maxNameLength]"
+                    :rules="[rules.required, rules.maxAddressLength]"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
