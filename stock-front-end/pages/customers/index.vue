@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Customers from '~/components/Customers'
+import Customers from '~/components/customers/Customers'
 export default {
   components: {
     Customers
