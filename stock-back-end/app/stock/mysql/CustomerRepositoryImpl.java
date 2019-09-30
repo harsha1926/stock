@@ -28,7 +28,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     public CompletableFuture<List<Customer>> getCustomers() throws CompletionException {
         return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
             List<Customer> customers = new ArrayList<>();
-            String sql = "select id, name, reference, phone, address, email, country, state, city, postal_code, modified_by, modified_on from customers";
+            String sql = "select id, name, reference, phone, address1, address2, email, country, state, city, postal_code, modified_by, modified_on from customers";
             try(CallableStatement stmt = connection.prepareCall(sql)) {
                 ResultSet rs = stmt.executeQuery();
                 while(rs.next()) {
@@ -43,7 +43,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     @Override
     public CompletableFuture<Customer> getCustomer(Long id) throws CompletionException {
         return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
-            String sql = "select id, name, reference, address, email, phone, modified_by, modified_on, country, state, city, postal_code from customers where id = ?";
+            String sql = "select id, name, reference,  address1, address2, email, phone, modified_by, modified_on, country, state, city, postal_code from customers where id = ?";
             try (CallableStatement stmt = connection.prepareCall(sql)) {
                 stmt.setLong(1, id);
                 ResultSet rs = stmt.executeQuery();
@@ -58,22 +58,23 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         }));
     }
     @Override
-    public CompletableFuture<Boolean> addNewCustomer  (String name, String reference, String address, String phone,
+    public CompletableFuture<Boolean> addNewCustomer  (String name, String reference, String address1, String address2, String phone,
                                                        String email, String country, String state, String city, String postal_code) throws CompletionException {
         return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
-            String sql = "insert into customers (name, reference, address, phone, email, modified_by," +
-                    "modified_on, country, state, city, postal_code) VALUES (?, ?, ?, ?, ?, ?, now(), ?, ?, ?, ?)";
+            String sql = "insert into customers (name, reference,  address1, address2, phone, email, modified_by," +
+                    "modified_on, country, state, city, postal_code) VALUES (?, ?, ?, ?, ?, ?, ?, now(), ?, ?, ?, ?)";
             try (CallableStatement stmt = connection.prepareCall(sql)) {
                 stmt.setString(1, name);
                 stmt.setString(2, reference);
-                stmt.setString(3, address);
-                stmt.setString(4, phone);
-                stmt.setString(5, email);
-                stmt.setString(6, "admin");
-                stmt.setString(7, country);
-                stmt.setString(8, state);
-                stmt.setString(9, city);
-                stmt.setString(10, postal_code);
+                stmt.setString(3, address1);
+                stmt.setString(4, address2);
+                stmt.setString(5, phone);
+                stmt.setString(6, email);
+                stmt.setString(7, "admin");
+                stmt.setString(8, country);
+                stmt.setString(9, state);
+                stmt.setString(10, city);
+                stmt.setString(11, postal_code);
                 int rows = stmt.executeUpdate();
                 if (rows > 0)
                     return true;
@@ -102,22 +103,23 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         }));
     }
     @Override
-    public CompletableFuture<Boolean> updateCustomer(Long id, String name, String reference, String address, String phone,
+    public CompletableFuture<Boolean> updateCustomer(Long id, String name, String reference, String address1, String address2, String phone,
                                                      String email, String country, String state, String city, String postalCode) throws CompletionException{
         return CompletableFuture.supplyAsync(() -> this.database.withConnection(connection -> {
-            String sql ="update customers set name=?, reference=?, address= ?, phone=?, email=?, country=?, state=?, city=?, postal_code=?, modified_by=?, modified_on=now()  where id = ?;";
+            String sql ="update customers set name=?, reference=?, address1= ?, address2=?, phone=?, email=?, country=?, state=?, city=?, postal_code=?, modified_by=?, modified_on=now()  where id = ?;";
             try(CallableStatement stmt = connection.prepareCall(sql)){
                 stmt.setString(1, name);
                 stmt.setString(2, reference);
-                stmt.setString(3, address);
-                stmt.setString(4, phone);
-                stmt.setString(5, email);
-                stmt.setString(6, country);
-                stmt.setString(7, state);
-                stmt.setString(8, city);
-                stmt.setString(9, postalCode);
-                stmt.setString(10,"admin");
-                stmt.setLong(11, id);
+                stmt.setString(3, address1);
+                stmt.setString(4, address2);
+                stmt.setString(5, phone);
+                stmt.setString(6, email);
+                stmt.setString(7, country);
+                stmt.setString(8, state);
+                stmt.setString(9, city);
+                stmt.setString(10, postalCode);
+                stmt.setString(11,"admin");
+                stmt.setLong(12, id);
                 int rows = stmt.executeUpdate();
                 if(rows > 0)
                     return true;
@@ -130,14 +132,13 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         }));
 
     }
-
-
     private Customer deserializeCustomer(ResultSet rs) throws SQLException {
             Long id = rs.getLong("id");
             String name = rs.getString("name");
             String reference = rs.getString("reference");
             String phone = rs.getString("phone");
-            String address = rs.getString("address");
+            String address1 = rs.getString("address1");
+        String address2 = rs.getString("address2");
             String email = rs.getString("email");
             String country = rs.getString("country");
             String state = rs.getString("state");
@@ -145,6 +146,6 @@ public class CustomerRepositoryImpl implements CustomerRepository{
             String postalCode = rs.getString("postal_code");
             String modified_by = rs.getString("modified_by");
             Date modified_on = rs.getDate("modified_on");
-            return new Customer(id, name, reference, phone, address, email, country, state, city, postalCode, modified_by, modified_on);
+            return new Customer(id, name, reference, phone, address1, address2, email, country, state, city, postalCode, modified_by, modified_on);
         }
 }

@@ -11,7 +11,8 @@ public class Supplier {
     private String phone;
     private String reference;
     private String name;
-    private String address;
+    private String address1;
+    private String address2;
     private String email;
     private String country;
     private String state;
@@ -23,12 +24,13 @@ public class Supplier {
 
 
 
-    public Supplier(Long id, String name, String reference, String phone, String address, String email, String country, String state, String city, String postalCode, String modified_by, Date modified_on ) {
+    public Supplier(Long id, String name, String reference, String phone, String address1, String address2, String email, String country, String state, String city, String postalCode, String modified_by, Date modified_on ) {
         this.id = id;
         this.name = name;
         this.reference = reference;
         this.phone = phone;
-        this.address = address;
+        this.address1 = address1;
+        this.address2 = address2;
         this.email = email;
         this.country = country;
         this.state = state;
@@ -70,13 +72,21 @@ public class Supplier {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAddress1() {
+        return address1;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddress1(String address1) {
+        this.address1 = address1;
     }
+    public String getAddress2() {
+        return address2;
+    }
+
+    public void setAddress2(String address2) {
+        this.address2 = address2;
+    }
+
 
     public String getEmail() {
         return email;
@@ -140,7 +150,8 @@ public class Supplier {
         json.put("name", this.name);
         json.put("reference", this.reference);
         json.put("phone", this.phone);
-        json.put("address", this.address);
+        json.put("address1", this.address1);
+        json.put("address2", this.address2);
         json.put("email", this.email);
         json.put("country", this.country);
         json.put("state", this.state);

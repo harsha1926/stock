@@ -67,8 +67,11 @@ public class SuppliersController extends Controller {
                 requestJson.get("name").asText().length() <= 50)) {
             return CompletableFuture.completedFuture(internalServerError("Invalid name"));
         }
-        if(!requestJson.hasNonNull("address")) {
-            return CompletableFuture.completedFuture(internalServerError("Invalid address"));
+        if(!requestJson.hasNonNull("address1")) {
+            return CompletableFuture.completedFuture(internalServerError("Invalid address1"));
+        }
+        if(!requestJson.hasNonNull("address2")) {
+            return CompletableFuture.completedFuture(internalServerError("Invalid address2"));
         }
         if(!(requestJson.hasNonNull("phone") && requestJson.get("phone").asText().length() ==10))
         {
@@ -94,7 +97,8 @@ public class SuppliersController extends Controller {
 
         String name = requestJson.get("name").asText();
         String reference = requestJson.hasNonNull("reference") ? requestJson.get("reference").asText(): "";
-        String address = requestJson.hasNonNull("address") ? requestJson.get("address").asText():"";
+        String address1 = requestJson.hasNonNull("address1") ? requestJson.get("address1").asText():"";
+        String address2 = requestJson.get("address2").asText();
         String phone = requestJson.hasNonNull("phone") ? requestJson.get("phone").asText():"";
         String email = requestJson.get("email").asText();
         String country = requestJson.hasNonNull("country") ? requestJson.get("country").asText():"";
@@ -102,7 +106,7 @@ public class SuppliersController extends Controller {
         String city = requestJson.hasNonNull("city") ? requestJson.get("city").asText():"";
         String postalCode = requestJson.hasNonNull("postalCode") ? requestJson.get("postalCode").asText():"";
 
-        return this.supplierRepository.addNewSupplier(name, reference, address, phone, email, country, state, city, postalCode ).thenApplyAsync(isInserted -> {
+        return this.supplierRepository.addNewSupplier(name, reference, address1, address2, phone, email, country, state, city, postalCode ).thenApplyAsync(isInserted -> {
             return ok(Json.toJson(isInserted));
         }, httpExecutionContext.current()).exceptionally(e -> {
             e.printStackTrace();
@@ -113,7 +117,8 @@ public class SuppliersController extends Controller {
         JsonNode requestJson =  request.body().asJson();
         String name = requestJson.get("name").asText();
         String reference =requestJson.get("reference").asText();
-        String address = requestJson.get("address").asText();
+        String address1 = requestJson.get("address1").asText();
+        String address2 = requestJson.get("address2").asText();
         String phone = requestJson.get("phone").asText();
         String email = requestJson.get("email").asText();
         String country = requestJson.get("country").asText();
@@ -121,7 +126,7 @@ public class SuppliersController extends Controller {
         String city = requestJson.get("city").asText();
         String postalCode = requestJson.get("postalCode").asText();
 
-        return this.supplierRepository.updateSupplier(id, name, reference, address, phone, email, country, state, city, postalCode).thenApplyAsync(isUpdated -> {
+        return this.supplierRepository.updateSupplier(id, name, reference, address1, address2, phone, email, country, state, city, postalCode).thenApplyAsync(isUpdated -> {
             return ok(Json.toJson(isUpdated));
         }, httpExecutionContext.current()).exceptionally(e -> {
             e.printStackTrace();
