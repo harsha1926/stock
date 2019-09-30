@@ -66,14 +66,27 @@
                   </v-list-tile-content>
 
                   <v-list-tile-avatar>
-                    <v-icon
-                      color="primary"
-                      @click="deleteSelectedProduct(supplier.id)"
-                      v-on="on"
-                    >delete</v-icon>
-                  </v-list-tile-avatar>
-                  <v-list-tile-avatar>
-                    <v-icon color="primary">edit</v-icon>
+                    <v-menu bottom left>
+                      <template v-slot:activator="{ on }">
+                        <v-icon color="primary" v-on="on">more_vert</v-icon>
+                      </template>
+                      <v-list>
+                        <v-list-tile key="edit">
+                          <v-list-tile-avatar>
+                            <v-icon color="primary">edit</v-icon>
+                          </v-list-tile-avatar>
+                        </v-list-tile>
+                        <v-list-tile key="delete">
+                          <v-list-tile-avatar>
+                            <v-icon
+                              color="primary"
+                              @click="deleteSelectedProduct(product.id)"
+                              v-on="on"
+                            >delete</v-icon>
+                          </v-list-tile-avatar>
+                        </v-list-tile>
+                      </v-list>
+                    </v-menu>
                   </v-list-tile-avatar>
                 </v-list-tile>
               </v-list>
