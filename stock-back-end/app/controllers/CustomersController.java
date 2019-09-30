@@ -57,9 +57,7 @@ public class CustomersController extends Controller {
         if(!requestJson.hasNonNull("address1")) {
             return CompletableFuture.completedFuture(internalServerError("Invalid address1"));
         }
-        if(!requestJson.hasNonNull("address2")) {
-            return CompletableFuture.completedFuture(internalServerError("Invalid address2"));
-        }
+
         if(!(requestJson.hasNonNull("phone") && requestJson.get("phone").asText().length() ==10))
         {
             return CompletableFuture.completedFuture(internalServerError("Invalid phone"));
