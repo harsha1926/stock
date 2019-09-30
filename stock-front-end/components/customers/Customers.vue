@@ -42,7 +42,8 @@
                       class="caption font-weight-thin"
                     >{{ customer.reference }}</span>
                   </v-list-tile-title>
-                  <v-list-tile-sub-title>{{ customer.address }}</v-list-tile-sub-title>
+                  <v-list-tile-sub-title>{{ customer.address1 }}</v-list-tile-sub-title>
+                  <v-list-tile-sub-title>{{ customer.address2 }}</v-list-tile-sub-title>
                 </v-list-tile-content>
 
                 <v-list-tile-avatar>

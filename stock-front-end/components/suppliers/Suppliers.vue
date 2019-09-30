@@ -43,7 +43,8 @@
                       class="caption font-weight-thin"
                     >{{ supplier.reference }}</span>
                   </v-list-tile-title>
-                  <v-list-tile-sub-title>{{ supplier.address }}</v-list-tile-sub-title>
+                  <v-list-tile-sub-title>{{ supplier.address1 }}</v-list-tile-sub-title>
+                  <v-list-tile-sub-title>{{ supplier.address2 }}</v-list-tile-sub-title>
                 </v-list-tile-content>
 
                 <v-list-tile-avatar>
