@@ -4,7 +4,7 @@
       <v-form v-model="valid" ref="supplier_creation_form" lazy-validation>
         <v-card>
           <v-card-title>
-            <span class="headline">Add new supplier</span>
+            <span class="headline">{{ dialogHeader }}</span>
           </v-card-title>
           <v-card-text>
             <v-container grid-list-md>
@@ -29,15 +29,15 @@
                 <v-flex xs12>
                   <v-text-field label="Address line 2" v-model="address2"></v-text-field>
                 </v-flex>
-
                 <v-flex xs12 sm6 md6>
                   <v-autocomplete
-                    label="Country"
-                    v-model="country"
+                    label="City"
+                    v-model="city"
                     :rules="[rules.required]"
-                    :items="['Canada']"
+                    :items="['Longueuil']"
                   ></v-autocomplete>
                 </v-flex>
+
                 <v-flex xs12 sm6 md6>
                   <v-autocomplete
                     label="Province/State"
@@ -49,12 +49,13 @@
                 <v-spacer></v-spacer>
                 <v-flex xs12 sm6 md6>
                   <v-autocomplete
-                    label="City"
-                    v-model="city"
+                    label="Country"
+                    v-model="country"
                     :rules="[rules.required]"
-                    :items="['Longueuil']"
+                    :items="['Canada']"
                   ></v-autocomplete>
                 </v-flex>
+
                 <v-flex xs12 sm6 md6>
                   <v-autocomplete
                     label="Postal code"
@@ -79,18 +80,12 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary darken-1" flat @click="dialogClosed()">Close</v-btn>
-            <v-btn
-              color="primary darken-1"
-              flat
-              :disabled="!valid"
-              @click="submit()"
-            >{{ submitLabel }}</v-btn>
+            <v-btn flat @click="dialogClosed()">Close</v-btn>
+            <v-btn color="primary" flat :disabled="!valid" @click="submit()">{{ submitLabel }}</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
     </v-dialog>
-    <v-snackbar bottom color="primary" :value="snackbar">{{ successMessage }}</v-snackbar>
   </div>
 </template>
 
@@ -98,10 +93,9 @@
 export default {
   props: {
     dialog: Boolean,
+    dialogHeader: String,
     submitLabel: String,
     submitFunction: Function,
-    snackbar: Boolean,
-    successMessage: String,
     supplier: Object
   },
   data() {
@@ -170,6 +164,18 @@ export default {
         this.postalCode = newVal.postalCode
         this.email = newVal.email
         this.phone = newVal.phone
+      } else {
+        this.id = null
+        this.name = null
+        this.reference = null
+        this.address1 = null
+        this.address2 = null
+        this.country = null
+        this.state = null
+        this.city = null
+        this.postalCode = null
+        this.email = null
+        this.phone = null
       }
     }
   }

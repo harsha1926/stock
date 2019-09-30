@@ -1,33 +1,25 @@
 <template>
   <v-container fluid ma-0 pa-0>
+    <v-snackbar bottom color="primary" :value="snackbar">{{ successMessage }}</v-snackbar>
     <v-flex xs12 sm12 md6 offset-md3 la4 offset-la4 xl4 offset-xl4>
       <v-card>
         <v-layout pt-3>
           <supplier-form
-            :dialog="showCreateDialog"
-            @dialog-closed="showCreateDialog = false"
-            submitLabel="Add"
-            :submitFunction="addNewSupplier"
-            :snackbar="showSnackbar"
-            :successMessage="successMessage"
+            :dialog="showDialog"
+            :dialogHeader="dialogHeader"
+            @dialog-closed="showDialog = false"
+            :submitLabel="submitLabel"
+            :submitFunction="submitFunction"
+            :supplier="selectedSupplier"
           />
 
           <v-flex hidden-xs-only>
-            <v-btn fab color="primary" @click="showCreateDialog = true" icon small>
+            <v-btn fab color="primary" @click="addSupplier()" icon small>
               <v-icon>add</v-icon>
             </v-btn>
           </v-flex>
           <v-flex hidden-sm-and-up>
-            <v-btn
-              fab
-              fixed
-              bottom
-              right
-              color="primary"
-              @click="showCreateDialog = true"
-              icon
-              small
-            >
+            <v-btn fab fixed bottom right color="primary" @click="addSupplier()" icon small>
               <v-icon>add</v-icon>
             </v-btn>
           </v-flex>
@@ -55,7 +47,7 @@
                 </v-list-tile-content>
 
                 <v-list-tile-avatar>
-                  <v-icon color="primary" v-on="on" @click="callPhone(supplier.phone)">phone</v-icon>
+                  <v-icon color="primary" @click="callPhone(supplier.phone)">phone</v-icon>
                 </v-list-tile-avatar>
 
                 <v-list-tile-avatar>
@@ -66,25 +58,17 @@
                     <v-list>
                       <v-list-tile key="email">
                         <v-list-tile-avatar>
-                          <v-icon color="primary" v-on="on" @click="sendEmail(supplier.email)">email</v-icon>
+                          <v-icon color="primary" @click="sendEmail(supplier.email)">email</v-icon>
                         </v-list-tile-avatar>
                       </v-list-tile>
                       <v-list-tile key="edit">
                         <v-list-tile-avatar>
-                          <v-icon
-                            color="primary"
-                            v-on="on"
-                            @click="showUpdateDialog = true; selectedSupplier = supplier"
-                          >edit</v-icon>
+                          <v-icon color="primary" @click="updateSupplier(supplier)">edit</v-icon>
                         </v-list-tile-avatar>
                       </v-list-tile>
                       <v-list-tile key="delete">
                         <v-list-tile-avatar>
-                          <v-icon
-                            color="primary"
-                            v-on="on"
-                            @click="deleteSelectedSupplier(supplier)"
-                          >delete</v-icon>
+                          <v-icon color="primary" @click="deleteThisSupplier(supplier)">delete</v-icon>
                         </v-list-tile-avatar>
                       </v-list-tile>
                     </v-list>
@@ -96,16 +80,15 @@
         </v-card-text>
       </v-card>
     </v-flex>
-    <supplier-form
-      :dialog="showUpdateDialog"
-      @dialog-closed="showUpdateDialog = false"
-      submitLabel="Save"
-      :submitFunction="updateSupplier"
-      :snackbar="showSnackbar"
-      :successMessage="successMessage"
-      :supplier="selectedSupplier"
-    />
-    <v-snackbar bottom color="primary" v-model="showSnackbar">{{ successMessage }}</v-snackbar>
+    <v-dialog persistent v-model="deleteWarningDialog" max-width="400">
+      <v-card>
+        <v-card-title class="headline">Do you really want to get rid of him?</v-card-title>
+        <v-card-actions>
+          <v-btn flat color="primary" @click="deleteWarningDialog = false">Cancel</v-btn>
+          <v-btn flat @click="deleteSelectedSupplier()">Sure</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script>
@@ -123,18 +106,39 @@ export default {
   },
   data() {
     return {
-      showCreateDialog: false,
-      showSnackbar: false,
+      deleteWarningDialog: false,
+      showDialog: false,
+      dialogHeader: null,
+      submitLabel: null,
+      submitFunction: null,
+      snackbar: false,
+      successMessage: null,
       suppliers: [],
       loading: true,
       update: false,
       on: false,
-      successMessage: null,
-      showUpdateDialog: false,
       selectedSupplier: null
     }
   },
   methods: {
+    deleteThisSupplier(supplier) {
+      this.selectedSupplier = supplier
+      this.deleteWarningDialog = true
+    },
+    addSupplier() {
+      this.selectedSupplier = null
+      this.dialogHeader = 'Add new Supplier'
+      this.showDialog = true
+      this.submitLabel = 'Add'
+      this.submitFunction = this.addNewSupplier
+    },
+    updateSupplier(supplier) {
+      this.selectedSupplier = supplier
+      this.dialogHeader = 'Update Supplier'
+      this.showDialog = true
+      this.submitLabel = 'Save'
+      this.submitFunction = this.updateSelectedSupplier
+    },
     callPhone: function(phoneNumber) {
       window.open('tel:' + phoneNumber)
     },
@@ -147,35 +151,38 @@ export default {
           if (response.data) {
             this.successMessage =
               'New supplier ' + payload.name + ' added successfully!'
-            this.showSnackbar = true
-            this.showCreateDialog = false
+            this.snackbar = true
+            this.showDialog = false
           }
         })
         .catch(error => {
           console.error(error)
         })
     },
-    deleteSelectedSupplier: function(supplier) {
-      deleteSupplier(supplier.id)
+    deleteSelectedSupplier: function() {
+      deleteSupplier(this.selectedSupplier.id)
         .then(response => {
           if (response.data) {
             this.successMessage =
-              'Supplier ' + supplier.name + ' deleted successfully!'
-            this.showSnackbar = true
+              'Supplier ' +
+              this.selectedSupplier.name +
+              ' deleted successfully!'
+            this.snackbar = true
+            this.deleteWarningDialog = false
           }
         })
         .catch(error => {
           console.error(error)
         })
     },
-    updateSupplier: function(payload) {
+    updateSelectedSupplier: function(payload) {
       putSupplier(payload)
         .then(response => {
           if (response.data) {
             this.successMessage =
               'Supplier ' + payload.name + ' updated successfully!'
-            this.showSnackbar = true
-            this.showUpdateDialog = false
+            this.snackbar = true
+            this.showDialog = false
           }
         })
         .catch(error => {

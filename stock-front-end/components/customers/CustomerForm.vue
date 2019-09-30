@@ -4,7 +4,7 @@
       <v-form v-model="valid" ref="form">
         <v-card>
           <v-card-title>
-            <span class="headline">{{$t('app.actions.add_new_customer')}}</span>
+            <span class="headline" justify-center>{{ dialogHeader }}</span>
           </v-card-title>
           <v-card-text>
             <v-container grid-list-md>
@@ -33,12 +33,13 @@
                 </v-flex>
                 <v-flex xs12 sm6 md6>
                   <v-autocomplete
-                    :label="$t('app.actions.country')"
-                    v-model="country"
+                    :label="$t('app.actions.city')"
+                    v-model="city"
                     :rules="[rules.required]"
-                    :items="['Canada']"
+                    :items="['Longueuil']"
                   ></v-autocomplete>
                 </v-flex>
+
                 <v-flex xs12 sm6 md6>
                   <v-autocomplete
                     :label="$t('app.actions.state')"
@@ -50,12 +51,13 @@
                 <v-spacer></v-spacer>
                 <v-flex xs12 sm6 md6>
                   <v-autocomplete
-                    :label="$t('app.actions.city')"
-                    v-model="city"
+                    :label="$t('app.actions.country')"
+                    v-model="country"
                     :rules="[rules.required]"
-                    :items="['Longueuil']"
+                    :items="['Canada']"
                   ></v-autocomplete>
                 </v-flex>
+
                 <v-flex xs12 sm6 md6>
                   <v-autocomplete
                     :label="$t('app.actions.postal_code')"
@@ -85,7 +87,12 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="primary darken-1" flat @click="dialogClosed()">Close</v-btn>
-            <v-btn color="primary darken-1" flat :disabled="!valid" @click="addNewCustomer()">Save</v-btn>
+            <v-btn
+              color="primary darken-1"
+              flat
+              :disabled="!valid"
+              @click="submit"
+            >{{ submitLabel }}</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
@@ -96,7 +103,11 @@
 <script>
 export default {
   props: {
-    dialog: Boolean
+    dialog: Boolean,
+    dialogHeader: String,
+    customer: Object,
+    submitLabel: String,
+    submitFunction: Function
   },
   data() {
     return {
@@ -131,6 +142,53 @@ export default {
   methods: {
     dialogClosed: function() {
       this.$emit('dialog-closed')
+    },
+    submit: function() {
+      if (this.$refs.form.validate()) {
+        let payload = {
+          id: this.id,
+          name: this.name,
+          reference: this.reference,
+          address: this.address1 + (this.address2 ? ', ' + this.address2 : ''),
+          phone: this.phone,
+          email: this.email,
+          country: this.country,
+          state: this.state,
+          city: this.city,
+          postalCode: this.postalCode
+        }
+        this.submitFunction(payload)
+      }
+    }
+  },
+
+  watch: {
+    customer: function(newVal) {
+      if (newVal) {
+        this.id = newVal.id
+        this.name = newVal.name
+        this.reference = newVal.reference
+        this.address1 = newVal.address1
+        this.address2 = newVal.address2
+        this.phone = newVal.phone
+        this.email = newVal.email
+        this.country = newVal.country
+        this.state = newVal.state
+        this.city = newVal.city
+        this.postalCode = newVal.postalCode
+      } else {
+        this.id = null
+        this.name = null
+        this.reference = null
+        this.address1 = null
+        this.address2 = null
+        this.phone = null
+        this.email = null
+        this.country = null
+        this.state = null
+        this.city = null
+        this.postalCode = null
+      }
     }
   }
 }

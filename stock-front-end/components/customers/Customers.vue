@@ -4,14 +4,21 @@
     <v-flex xs12 sm12 md6 offset-md3 la4 offset-la4 xl4 offset-xl4>
       <v-card>
         <v-layout pt-3>
-          <customer-form :dialog="showCreateDialog" @dialog-closed="showCreateDialog=false" />
+          <customer-form
+            :dialog="showDialog"
+            @dialog-closed="showDialog=false"
+            :dialogHeader="dialogHeader"
+            :customer="selectedCustomer"
+            :submitLabel="submitLabel"
+            :submitFunction="submitFunction"
+          />
           <v-flex hidden-xs-only>
-            <v-btn fab color="primary" icon small @click="showCreateDialog=true">
+            <v-btn fab color="primary" icon small @click="addCustomer()">
               <v-icon>add</v-icon>
             </v-btn>
           </v-flex>
           <v-flex hidden-sm-and-up>
-            <v-btn fab color="primary" bottom right fixed icon small @click="showCreateDialog=true">
+            <v-btn fab color="primary" bottom right fixed icon small @click="addCustomer()">
               <v-icon>add</v-icon>
             </v-btn>
           </v-flex>
@@ -39,7 +46,7 @@
                 </v-list-tile-content>
 
                 <v-list-tile-avatar>
-                  <v-icon color="primary">phone</v-icon>
+                  <v-icon color="primary" @click="callPhone(customer.phone)">phone</v-icon>
                 </v-list-tile-avatar>
                 <v-list-tile-avatar>
                   <v-menu bottom left>
@@ -49,19 +56,19 @@
                     <v-list>
                       <v-list-tile>
                         <v-list-tile-avatar>
-                          <v-icon color="primary">email</v-icon>
+                          <v-icon color="primary" @click="sendEmail(customer.email)">email</v-icon>
                         </v-list-tile-avatar>
                       </v-list-tile>
                       <v-list-tile>
                         <v-list-tile-avatar>
-                          <v-icon color="primary">edit</v-icon>
+                          <v-icon color="primary" @click="updateCustomer(customer)">edit</v-icon>
                         </v-list-tile-avatar>
                       </v-list-tile>
                       <v-list-tile>
                         <v-list-tile-avatar>
                           <v-icon
                             color="primary"
-                            @click="deleteSelectedCustomer(customer)"
+                            @click="deleteThisCustomer(customer)"
                             v-on="on"
                           >delete</v-icon>
                         </v-list-tile-avatar>
@@ -75,10 +82,24 @@
         </v-card-text>
       </v-card>
     </v-flex>
+    <v-dialog v-model="deleteWarningDialog" persistent max-width="400">
+      <v-card>
+        <v-card-title>Are you sure you want to get rid of him?</v-card-title>
+        <v-card-actions>
+          <v-btn color="primary" @click="deleteWarningDialog=false">Cancel</v-btn>
+          <v-btn @click="deleteSelectedCustomer()">Sure</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script>
-import { getCustomers, postCustomer, deleteCustomer } from '~/api/customers'
+import {
+  getCustomers,
+  postCustomer,
+  deleteCustomer,
+  putCustomer
+} from '~/api/customers'
 import CustomerForm from './CustomerForm'
 export default {
   components: {
@@ -103,7 +124,12 @@ export default {
       snackbar: false,
       on: false,
       snackbarMessage: null,
-      showCreateDialog: false,
+      showDialog: false,
+      dialogHeader: null,
+      submitLabel: null,
+      selectedCustomer: null,
+      submitFunction: null,
+      deleteWarningDialog: false,
       rules: {
         required: v => !!v || this.$t('app.actions.validations.required'),
         minNameLength: v =>
@@ -121,47 +147,73 @@ export default {
     }
   },
   methods: {
-    addNewCustomer: function() {
-      if (this.$refs.form.validate()) {
-        let payload = {
-          name: this.name,
-          reference: this.reference,
-          address: this.address1 + (this.address2 ? ', ' + this.address2 : ''),
-          phone: this.phone,
-          email: this.email,
-          country: this.country,
-          state: this.state,
-          city: this.city,
-          postalCode: this.postalCode
-        }
-
-        postCustomer(payload)
-          .then(response => {
-            if (response.data) {
-              this.snackbarMessage =
-                'New customer ' + this.name + ' added successfully!'
-              this.snackbar = true
-              this.dialog = false
-            }
-          })
-          .catch(error => {
-            console.error(error)
-          })
-      }
-    },
-    deleteSelectedCustomer: function(customer) {
-      deleteCustomer(customer.id)
+    addNewCustomer: function(payload) {
+      postCustomer(payload)
         .then(response => {
           if (response.data) {
             this.snackbarMessage =
-              'Customer ' + customer.name + ' deleted successfully!'
+              'New customer ' + payload.name + ' added successfully!'
             this.snackbar = true
-            this.dialog = false
+            this.showDialog = false
           }
         })
         .catch(error => {
           console.error(error)
         })
+    },
+    deleteThisCustomer: function(customer) {
+      this.selectedCustomer = customer
+      this.deleteWarningDialog = true
+    },
+    deleteSelectedCustomer: function() {
+      deleteCustomer(this.selectedCustomer.id)
+        .then(response => {
+          if (response.data) {
+            this.snackbarMessage =
+              'Customer ' +
+              this.selectedCustomer.name +
+              ' deleted successfully!'
+            this.snackbar = true
+            this.deleteWarningDialog = false
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    },
+    updateSelectedCustomer: function(payload) {
+      putCustomer(payload)
+        .then(response => {
+          if (response.data) {
+            this.snackbarMessage =
+              'Customer ' + payload.name + ' updated successfully!'
+            this.snackbar = true
+            this.showDialog = false
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    },
+    addCustomer: function() {
+      this.showDialog = true
+      this.dialogHeader = 'Add new Customer'
+      this.selectedCustomer = null
+      this.submitLabel = 'Save'
+      this.submitFunction = this.addNewCustomer
+    },
+    updateCustomer: function(customer) {
+      this.showDialog = true
+      this.dialogHeader = 'Edit Customer'
+      this.selectedCustomer = customer
+      this.submitLabel = 'Update'
+      this.submitFunction = this.updateSelectedCustomer
+    },
+    callPhone: function(phoneNumber) {
+      window.open('tel:' + phoneNumber)
+    },
+    sendEmail: function(email) {
+      window.open('mailto:' + email)
     }
   },
   mounted: function() {

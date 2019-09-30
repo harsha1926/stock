@@ -145,7 +145,7 @@ public class Supplier {
         json.put("country", this.country);
         json.put("state", this.state);
         json.put("city", this.city);
-        json.put("postal_code", this.postalCode);
+        json.put("postalCode", this.postalCode);
         json.put("modified_by", this.modified_by);
         json.put("modified_on", this.modified_on != null ? this.modified_on.toString() : "");
         return json;
