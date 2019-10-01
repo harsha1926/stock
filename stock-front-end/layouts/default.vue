@@ -76,6 +76,7 @@ export default {
   },
   data() {
     return {
+      vm: this,
       drawer: false,
       hidden: false,
       items: [
