@@ -104,8 +104,8 @@ public class SuppliersController extends Controller {
         String city = requestJson.hasNonNull("city") ? requestJson.get("city").asText():"";
         String postalCode = requestJson.hasNonNull("postalCode") ? requestJson.get("postalCode").asText():"";
 
-        return this.supplierRepository.addNewSupplier(name, reference, address1, address2, phone, email, country, state, city, postalCode ).thenApplyAsync(isInserted -> {
-            return ok(Json.toJson(isInserted));
+        return this.supplierRepository.addNewSupplier(name, reference, address1, address2, phone, email, country, state, city, postalCode ).thenApplyAsync(supplier -> {
+            return ok(supplier.toJson());
         }, httpExecutionContext.current()).exceptionally(e -> {
             e.printStackTrace();
             return internalServerError(e.toString());
