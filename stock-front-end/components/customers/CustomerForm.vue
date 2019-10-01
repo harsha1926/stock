@@ -11,29 +11,29 @@
               <v-layout wrap>
                 <v-flex xs12 sm6 md6>
                   <v-text-field
-                    :label="$t('app.actions.name')"
+                    :label="$t('app.actions.form.name')"
                     v-model="name"
                     :rules="[rules.required, rules.minNameLength, rules.maxNameLength]"
                     counter="50"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md6>
-                  <v-text-field :label="$t('app.actions.reference')" v-model="reference"></v-text-field>
+                  <v-text-field :label="$t('app.actions.form.reference')" v-model="reference"></v-text-field>
                 </v-flex>
                 <v-flex xs12>
                   <v-text-field
-                    :label="$t('app.actions.address_1')"
+                    :label="$t('app.actions.form.address_1')"
                     v-model="address1"
                     :rules="[rules.required, rules.maxAddressLength]"
                     counter="50"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field :label="$t('app.actions.address_2')" v-model="address2"></v-text-field>
+                  <v-text-field :label="$t('app.actions.form.address_2')" v-model="address2"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md6>
                   <v-autocomplete
-                    :label="$t('app.actions.city')"
+                    :label="$t('app.actions.form.city')"
                     v-model="city"
                     :rules="[rules.required]"
                     :items="['Longueuil']"
@@ -42,7 +42,7 @@
 
                 <v-flex xs12 sm6 md6>
                   <v-autocomplete
-                    :label="$t('app.actions.state')"
+                    :label="$t('app.actions.form.state')"
                     v-model="state"
                     :rules="[rules.required]"
                     :items="['Quebec']"
@@ -51,7 +51,7 @@
                 <v-spacer></v-spacer>
                 <v-flex xs12 sm6 md6>
                   <v-autocomplete
-                    :label="$t('app.actions.country')"
+                    :label="$t('app.actions.form.country')"
                     v-model="country"
                     :rules="[rules.required]"
                     :items="['Canada']"
@@ -60,7 +60,7 @@
 
                 <v-flex xs12 sm6 md6>
                   <v-autocomplete
-                    :label="$t('app.actions.postal_code')"
+                    :label="$t('app.actions.form.postal_code')"
                     v-model="postalCode"
                     :rules="[rules.required]"
                     :items="['J4L4A8']"
@@ -68,14 +68,14 @@
                 </v-flex>
                 <v-flex xs12 sm6 md6>
                   <v-text-field
-                    :label="$t('app.actions.email')"
+                    :label="$t('app.actions.form.email')"
                     v-model="email"
                     :rules="[rules.emailRule]"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md6>
                   <v-text-field
-                    :label=" $t('app.actions.phone')"
+                    :label=" $t('app.actions.form.phone')"
                     v-model="phone"
                     mask="phone"
                     :rules="[rules.required]"

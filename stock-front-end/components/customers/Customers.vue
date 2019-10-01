@@ -198,16 +198,16 @@ export default {
     },
     addCustomer: function() {
       this.showDialog = true
-      this.dialogHeader = 'Add new Customer'
+      this.dialogHeader = this.$t('app.actions.form.add_new_customer')
       this.selectedCustomer = null
-      this.submitLabel = 'Save'
+      this.submitLabel = this.$t('app.actions.form.save')
       this.submitFunction = this.addNewCustomer
     },
     updateCustomer: function(customer) {
       this.showDialog = true
-      this.dialogHeader = 'Edit Customer'
+      this.dialogHeader = this.$t('app.actions.form.update_customer')
       this.selectedCustomer = customer
-      this.submitLabel = 'Update'
+      this.submitLabel = this.$t('app.actions.form.update')
       this.submitFunction = this.updateSelectedCustomer
     },
     callPhone: function(phoneNumber) {
