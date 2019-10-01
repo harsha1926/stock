@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const getSuppliers = () => {
+const fetchSuppliers = () => {
   return axios.get(`/api/suppliers`)
 }
 
@@ -18,4 +18,10 @@ const putSupplier = payload => {
   return axios.put(`/api/suppliers/${payload.id}`, payload)
 }
 
-export { getSuppliers, getSupplier, postSupplier, deleteSupplier, putSupplier }
+export {
+  fetchSuppliers,
+  getSupplier,
+  postSupplier,
+  deleteSupplier,
+  putSupplier
+}
