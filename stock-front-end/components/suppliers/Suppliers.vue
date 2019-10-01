@@ -44,7 +44,7 @@
                     >{{ supplier.reference }}</span>
                   </v-list-tile-title>
                   <v-list-tile-sub-title>{{ supplier.address1 }}</v-list-tile-sub-title>
-                  <v-list-tile-sub-title>{{ supplier.address2 }}</v-list-tile-sub-title>
+                  <v-list-tile-sub-title v-if="supplier.address2">{{ supplier.address2 }}</v-list-tile-sub-title>
                 </v-list-tile-content>
 
                 <v-list-tile-avatar>
@@ -93,13 +93,9 @@
   </v-container>
 </template>
 <script>
-import {
-  getSuppliers,
-  postSupplier,
-  deleteSupplier,
-  putSupplier
-} from '~/api/suppliers'
+import { deleteSupplier } from '~/api/suppliers'
 import SupplierForm from './SupplierForm'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -114,30 +110,39 @@ export default {
       submitFunction: null,
       snackbar: false,
       successMessage: null,
-      suppliers: [],
       loading: true,
       update: false,
       on: false,
       selectedSupplier: null
     }
   },
+  computed: {
+    ...mapGetters({
+      suppliers: 'suppliers/suppliers'
+    })
+  },
   methods: {
+    ...mapActions({
+      getSuppliers: 'suppliers/getSuppliers',
+      addNewSupplierAction: 'suppliers/addNewSupplier',
+      updateSupplierAction: 'suppliers/updateSupplier'
+    }),
     deleteThisSupplier(supplier) {
       this.selectedSupplier = supplier
       this.deleteWarningDialog = true
     },
     addSupplier() {
       this.selectedSupplier = null
-      this.dialogHeader = 'Add new Supplier'
+      this.dialogHeader = this.$t('app.actions.form.add_new_supplier')
       this.showDialog = true
-      this.submitLabel = 'Add'
+      this.submitLabel = this.$t('app.actions.form.add')
       this.submitFunction = this.addNewSupplier
     },
     updateSupplier(supplier) {
       this.selectedSupplier = supplier
-      this.dialogHeader = 'Update Supplier'
+      this.dialogHeader = this.$t('app.actions.form.update_supplier')
       this.showDialog = true
-      this.submitLabel = 'Save'
+      this.submitLabel = this.$t('app.actions.form.save')
       this.submitFunction = this.updateSelectedSupplier
     },
     callPhone: function(phoneNumber) {
@@ -147,7 +152,7 @@ export default {
       window.open('mailto:' + email)
     },
     addNewSupplier: function(payload) {
-      postSupplier(payload)
+      this.addNewSupplierAction(payload)
         .then(response => {
           if (response.data) {
             this.successMessage =
@@ -177,7 +182,7 @@ export default {
         })
     },
     updateSelectedSupplier: function(payload) {
-      putSupplier(payload)
+      this.updateSupplierAction(payload)
         .then(response => {
           if (response.data) {
             this.successMessage =
@@ -192,9 +197,8 @@ export default {
     }
   },
   mounted: function() {
-    getSuppliers().then(response => {
+    this.getSuppliers().then(response => {
       this.loading = false
-      this.suppliers = response.data
     })
   }
 }
