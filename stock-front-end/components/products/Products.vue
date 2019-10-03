@@ -19,7 +19,7 @@
               </v-btn>
             </v-flex>
             <v-flex hidden-sm-and-up>
-              <v-btn fab color="primary" @click="showDialog=true" bottom right fixed icon small>
+              <v-btn fab color="primary" @click="addProduct()" bottom right fixed icon small>
                 <v-icon>add</v-icon>
               </v-btn>
             </v-flex>
@@ -85,25 +85,18 @@
   </v-container>
 </template>
 <script>
-import {
-  getProducts,
-  postProduct,
-  deleteProduct,
-  putProduct
-} from '~/api/products'
+import { deleteProduct } from '~/api/products'
 import ProductForm from './ProductForm'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   components: {
     ProductForm
   },
   data() {
     return {
-      products: [],
       loading: true,
       dialog: false,
       valid: false,
-      name: null,
-      category: null,
       snackbar: false,
       on: false,
       showDialog: false,
@@ -112,16 +105,22 @@ export default {
       deleteWarningDialog: false,
       dialogHeader: null,
       submitLabel: null,
-      submitFunction: null,
-
-      rules: {
-        required: v => !!v || 'Required field'
-      }
+      submitFunction: null
     }
   },
+  computed: {
+    ...mapGetters({
+      products: 'products/products'
+    })
+  },
   methods: {
+    ...mapActions({
+      getProducts: 'products/getProducts',
+      addNewProductAction: 'products/addNewProduct',
+      updateProductAction: 'products/updateProduct'
+    }),
     addNewProduct: function(payload) {
-      postProduct(payload)
+      this.addNewProductAction(payload)
         .then(response => {
           if (response.data) {
             this.snackbarMessage =
@@ -153,7 +152,7 @@ export default {
         })
     },
     updateSelectedProduct: function(payload) {
-      putProduct(payload)
+      this.updateProductAction(payload)
         .then(response => {
           if (response.data) {
             this.snackbarMessage =
@@ -183,9 +182,8 @@ export default {
     }
   },
   mounted: function() {
-    getProducts().then(response => {
+    this.getProducts().then(response => {
       this.loading = false
-      this.products = response.data
     })
   }
 }

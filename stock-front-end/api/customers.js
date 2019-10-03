@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const getCustomers = () => {
+const fetchCustomers = () => {
   return axios.get(`/api/customers`)
 }
 
@@ -17,4 +17,10 @@ const putCustomer = payload => {
   return axios.put(`/api/customers/${payload.id}`, payload)
 }
 
-export { getCustomers, getCustomer, postCustomer, deleteCustomer, putCustomer }
+export {
+  fetchCustomers,
+  getCustomer,
+  postCustomer,
+  deleteCustomer,
+  putCustomer
+}

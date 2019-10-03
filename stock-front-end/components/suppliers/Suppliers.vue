@@ -1,6 +1,6 @@
 <template>
   <v-container fluid ma-0 pa-0>
-    <v-snackbar bottom color="primary" :value="snackbar">{{ successMessage }}</v-snackbar>
+    <v-snackbar bottom color="primary" v-model="snackbar">{{ successMessage }}</v-snackbar>
     <v-flex xs12 sm12 md6 offset-md3 la4 offset-la4 xl4 offset-xl4>
       <v-card>
         <v-layout pt-3>
@@ -14,12 +14,21 @@
           />
 
           <v-flex hidden-xs-only>
-            <v-btn fab color="primary" @click="addSupplier()" icon small>
+            <v-btn fab color="primary" @click="openAddSupplierDialog()" icon small>
               <v-icon>add</v-icon>
             </v-btn>
           </v-flex>
           <v-flex hidden-sm-and-up>
-            <v-btn fab fixed bottom right color="primary" @click="addSupplier()" icon small>
+            <v-btn
+              fab
+              fixed
+              bottom
+              right
+              color="primary"
+              @click="openAddSupplierDialog()"
+              icon
+              small
+            >
               <v-icon>add</v-icon>
             </v-btn>
           </v-flex>
@@ -64,12 +73,15 @@
                       </v-list-tile>
                       <v-list-tile key="edit">
                         <v-list-tile-avatar>
-                          <v-icon color="primary" @click="updateSupplier(supplier)">edit</v-icon>
+                          <v-icon color="primary" @click="openEditSupplierDialog(supplier)">edit</v-icon>
                         </v-list-tile-avatar>
                       </v-list-tile>
                       <v-list-tile key="delete">
                         <v-list-tile-avatar>
-                          <v-icon color="primary" @click="deleteThisSupplier(supplier)">delete</v-icon>
+                          <v-icon
+                            color="primary"
+                            @click="openDeleteSupplierWarningDialog(supplier)"
+                          >delete</v-icon>
                         </v-list-tile-avatar>
                       </v-list-tile>
                     </v-list>
@@ -93,7 +105,6 @@
   </v-container>
 </template>
 <script>
-import { deleteSupplier } from '~/api/suppliers'
 import SupplierForm from './SupplierForm'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -111,7 +122,6 @@ export default {
       snackbar: false,
       successMessage: null,
       loading: true,
-      update: false,
       on: false,
       selectedSupplier: null
     }
@@ -124,21 +134,22 @@ export default {
   methods: {
     ...mapActions({
       getSuppliers: 'suppliers/getSuppliers',
-      addNewSupplierAction: 'suppliers/addNewSupplier',
-      updateSupplierAction: 'suppliers/updateSupplier'
+      createSupplier: 'suppliers/createSupplier',
+      updateSupplier: 'suppliers/updateSupplier',
+      removeSupplier: 'suppliers/removeSupplier'
     }),
-    deleteThisSupplier(supplier) {
+    openDeleteSupplierWarningDialog(supplier) {
       this.selectedSupplier = supplier
       this.deleteWarningDialog = true
     },
-    addSupplier() {
+    openAddSupplierDialog() {
       this.selectedSupplier = null
       this.dialogHeader = this.$t('app.actions.form.add_new_supplier')
       this.showDialog = true
       this.submitLabel = this.$t('app.actions.form.add')
       this.submitFunction = this.addNewSupplier
     },
-    updateSupplier(supplier) {
+    openEditSupplierDialog(supplier) {
       this.selectedSupplier = supplier
       this.dialogHeader = this.$t('app.actions.form.update_supplier')
       this.showDialog = true
@@ -152,7 +163,7 @@ export default {
       window.open('mailto:' + email)
     },
     addNewSupplier: function(payload) {
-      this.addNewSupplierAction(payload)
+      this.createSupplier(payload)
         .then(response => {
           if (response.data) {
             this.successMessage =
@@ -166,13 +177,13 @@ export default {
         })
     },
     deleteSelectedSupplier: function() {
-      deleteSupplier(this.selectedSupplier.id)
+      this.removeSupplier(this.selectedSupplier.id)
         .then(response => {
           if (response.data) {
             this.successMessage =
               'Supplier ' +
               this.selectedSupplier.name +
-              ' deleted successfully!'
+              ' removed successfully!'
             this.snackbar = true
             this.deleteWarningDialog = false
           }
@@ -182,7 +193,7 @@ export default {
         })
     },
     updateSelectedSupplier: function(payload) {
-      this.updateSupplierAction(payload)
+      this.updateSupplier(payload)
         .then(response => {
           if (response.data) {
             this.successMessage =

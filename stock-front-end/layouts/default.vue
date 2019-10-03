@@ -28,7 +28,14 @@
 
       <span class="title ml-3 mr-5" v-if="!hidden">{{ $t('app.title') }}</span>
       <v-flex hidden-xs-only xs7>
-        <v-text-field solo-inverted flat hide-details label="Search" prepend-inner-icon="search"></v-text-field>
+        <v-text-field
+          @keyup="setSearch($event)"
+          solo-inverted
+          flat
+          hide-details
+          label="Search"
+          prepend-inner-icon="search"
+        ></v-text-field>
       </v-flex>
       <v-flex hidden-sm-and-up v-if="hidden">
         <v-text-field label="Search" solo-inverted flat hide-details></v-text-field>
@@ -70,13 +77,14 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: {
     source: String
   },
   data() {
     return {
-      vm: this,
       drawer: false,
       hidden: false,
       items: [
@@ -98,6 +106,14 @@ export default {
   },
   mounted: function() {
     if (this.$vuetify.breakpoint.smAndUp) this.drawer = true
+  },
+  methods: {
+    ...mapActions({
+      setSearchText: 'app/setSearchText'
+    }),
+    setSearch(event) {
+      this.setSearchText(event.target.value)
+    }
   },
   head() {
     return {

@@ -95,14 +95,14 @@ public class SuppliersController extends Controller {
 
         String name = requestJson.get("name").asText();
         String reference = requestJson.hasNonNull("reference") ? requestJson.get("reference").asText(): "";
-        String address1 = requestJson.hasNonNull("address1") ? requestJson.get("address1").asText():"";
-        String address2 = requestJson.get("address2").asText();
-        String phone = requestJson.hasNonNull("phone") ? requestJson.get("phone").asText():"";
-        String email = requestJson.get("email").asText();
-        String country = requestJson.hasNonNull("country") ? requestJson.get("country").asText():"";
-        String state = requestJson.hasNonNull("state") ? requestJson.get("state").asText():"";
-        String city = requestJson.hasNonNull("city") ? requestJson.get("city").asText():"";
-        String postalCode = requestJson.hasNonNull("postalCode") ? requestJson.get("postalCode").asText():"";
+        String address1 = requestJson.hasNonNull("address1") ? requestJson.get("address1").asText(): "";
+        String address2 = requestJson.hasNonNull("address2") ? requestJson.get("address2").asText(): "";
+        String phone = requestJson.hasNonNull("phone") ? requestJson.get("phone").asText(): "";
+        String email = requestJson.hasNonNull("email") ? requestJson.get("email").asText(): "";
+        String country = requestJson.hasNonNull("country") ? requestJson.get("country").asText(): "";
+        String state = requestJson.hasNonNull("state") ? requestJson.get("state").asText(): "";
+        String city = requestJson.hasNonNull("city") ? requestJson.get("city").asText(): "";
+        String postalCode = requestJson.hasNonNull("postalCode") ? requestJson.get("postalCode").asText(): "";
 
         return this.supplierRepository.addNewSupplier(name, reference, address1, address2, phone, email, country, state, city, postalCode ).thenApplyAsync(supplier -> {
             return ok(supplier.toJson());

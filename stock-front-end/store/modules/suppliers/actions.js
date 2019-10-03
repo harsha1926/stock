@@ -1,4 +1,10 @@
-import { fetchSuppliers, postSupplier, putSupplier } from '~/api/suppliers'
+import {
+  fetchSuppliers,
+  fetchSupplier,
+  postSupplier,
+  putSupplier,
+  deleteSupplier
+} from '~/api/suppliers'
 
 const getSuppliers = context => {
   fetchSuppliers().then(response => {
@@ -6,7 +12,13 @@ const getSuppliers = context => {
   })
 }
 
-const addNewSupplier = (context, payload) => {
+const getSupplier = (context, id) => {
+  fetchSupplier(id).then(response => {
+    context.commit('SUPPLIER_FETCHED', response.data)
+  })
+}
+
+const createSupplier = (context, payload) => {
   return new Promise(function(resolve, reject) {
     postSupplier(payload)
       .then(response => {
@@ -26,7 +38,22 @@ const updateSupplier = (context, payload) => {
     putSupplier(payload)
       .then(response => {
         if (response.data) {
-          context.commit('UPDATED_SUPPLIER', response.data)
+          context.commit('UPDATED_SUPPLIER', payload)
+        }
+        resolve(response)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
+
+const removeSupplier = (context, id) => {
+  return new Promise(function(resolve, reject) {
+    deleteSupplier(id)
+      .then(response => {
+        if (response.data) {
+          context.commit('DELETED_SUPPLIER', id)
         }
         resolve(response)
       })
@@ -38,6 +65,8 @@ const updateSupplier = (context, payload) => {
 
 export default {
   getSuppliers,
-  addNewSupplier,
-  updateSupplier
+  getSupplier,
+  createSupplier,
+  updateSupplier,
+  removeSupplier
 }

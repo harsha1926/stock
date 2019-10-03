@@ -59,8 +59,8 @@ public class ProductsController extends Controller {
         String name = requestJson.hasNonNull("name") ? requestJson.get("name").asText():"";
         String category = requestJson.hasNonNull("category") ? requestJson.get("category").asText():"";
 
-        return this.productsRepository.addNewProduct(name, category).thenApplyAsync(isInserted -> {
-            return ok(Json.toJson(isInserted));
+        return this.productsRepository.addNewProduct(name, category).thenApplyAsync(product -> {
+            return ok(product.toJson());
         }, httpExecutionContext.current()).exceptionally(e -> {
             e.printStackTrace();
             return internalServerError(e.toString());

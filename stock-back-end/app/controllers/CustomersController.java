@@ -90,8 +90,8 @@ public class CustomersController extends Controller {
         String city = requestJson.hasNonNull("city") ? requestJson.get("city").asText():"";
         String postalCode = requestJson.hasNonNull("postalCode") ? requestJson.get("postalCode").asText():"";
 
-        return this.customerRepository.addNewCustomer(name, reference, address1, address2, phone, email,  country, state, city, postalCode ).thenApplyAsync(isInserted -> {
-            return ok(Json.toJson(isInserted));
+        return this.customerRepository.addNewCustomer(name, reference, address1, address2, phone, email,  country, state, city, postalCode ).thenApplyAsync(customer -> {
+            return ok(customer.toJson());
         }, httpExecutionContext.current()).exceptionally(e -> {
             e.printStackTrace();
             return internalServerError(e.toString());

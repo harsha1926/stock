@@ -85,9 +85,6 @@
             </v-card>
           </v-dialog>
         </v-layout>
-
-        <v-spacer></v-spacer>
-        <v-text-field v-model="search" append-icon="search" label="Search" hide-details></v-text-field>
       </v-card-title>
       <v-card-text>
         <v-data-table
@@ -115,6 +112,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
@@ -132,7 +131,6 @@ export default {
         { text: 'Paid On', value: 'paidOn' },
         { text: 'Amount Due', value: 'amountDue' }
       ],
-      search: null,
       dialog: false,
 
       products: [
@@ -170,6 +168,11 @@ export default {
         }
       ]
     }
+  },
+  computed: {
+    ...mapGetters({
+      search: 'app/search'
+    })
   }
 }
 </script>

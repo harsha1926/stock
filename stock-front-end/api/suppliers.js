@@ -4,24 +4,26 @@ const fetchSuppliers = () => {
   return axios.get(`/api/suppliers`)
 }
 
-const getSupplier = id => {
+const fetchSupplier = id => {
   return axios.get(`/api/suppliers/${id}`)
 }
 
 const postSupplier = payload => {
   return axios.post(`/api/suppliers`, payload)
 }
-const deleteSupplier = id => {
-  return axios.delete(`/api/suppliers/${id}`)
-}
+
 const putSupplier = payload => {
   return axios.put(`/api/suppliers/${payload.id}`, payload)
 }
 
+const deleteSupplier = id => {
+  return axios.delete(`/api/suppliers/${id}`)
+}
+
 export {
   fetchSuppliers,
-  getSupplier,
+  fetchSupplier,
   postSupplier,
-  deleteSupplier,
-  putSupplier
+  putSupplier,
+  deleteSupplier
 }

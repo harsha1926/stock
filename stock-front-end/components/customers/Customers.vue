@@ -95,33 +95,16 @@
   </v-container>
 </template>
 <script>
-import {
-  getCustomers,
-  postCustomer,
-  deleteCustomer,
-  putCustomer
-} from '~/api/customers'
+import { deleteCustomer } from '~/api/customers'
 import CustomerForm from './CustomerForm'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   components: {
     CustomerForm
   },
   data() {
     return {
-      customers: [],
       loading: true,
-      dialog: false,
-      valid: false,
-      name: null,
-      reference: null,
-      address1: null,
-      address2: null,
-      phone: null,
-      email: null,
-      country: null,
-      state: null,
-      city: null,
-      postalCode: null,
       snackbar: false,
       on: false,
       snackbarMessage: null,
@@ -131,25 +114,22 @@ export default {
       selectedCustomer: null,
       submitFunction: null,
       deleteWarningDialog: false,
-      rules: {
-        required: v => !!v || this.$t('app.actions.validations.required'),
-        minNameLength: v =>
-          (v && v.length > 2) ||
-          this.$t('app.actions.validations.min_name_length'),
-        maxNameLength: v =>
-          (v && v.length <= 50) ||
-          this.$t('app.actions.validations.max_name_length'),
-        maxAddressLength: v =>
-          (v && v.length <= 50) ||
-          this.$t('app.actions.validations.max_address_length'),
-        emailRule: v =>
-          /.+@.+/.test(v) || this.$t('app.actions.validations.email')
-      }
+      update: false
     }
   },
+  computed: {
+    ...mapGetters({
+      customers: 'customers/customers'
+    })
+  },
   methods: {
+    ...mapActions({
+      getCustomers: 'customers/getCustomers',
+      addNewCustomerAction: 'customers/addNewCustomer',
+      updateCustomerAction: 'customers/updateCustomer'
+    }),
     addNewCustomer: function(payload) {
-      postCustomer(payload)
+      this.addNewCustomerAction(payload)
         .then(response => {
           if (response.data) {
             this.snackbarMessage =
@@ -183,7 +163,7 @@ export default {
         })
     },
     updateSelectedCustomer: function(payload) {
-      putCustomer(payload)
+      this.updateCustomerAction(payload)
         .then(response => {
           if (response.data) {
             this.snackbarMessage =
@@ -207,7 +187,7 @@ export default {
       this.showDialog = true
       this.dialogHeader = this.$t('app.actions.form.update_customer')
       this.selectedCustomer = customer
-      this.submitLabel = this.$t('app.actions.form.update')
+      this.submitLabel = this.$t('app.actions.form.save')
       this.submitFunction = this.updateSelectedCustomer
     },
     callPhone: function(phoneNumber) {
@@ -218,9 +198,8 @@ export default {
     }
   },
   mounted: function() {
-    getCustomers().then(response => {
+    this.getCustomers().then(response => {
       this.loading = false
-      this.customers = response.data
     })
   }
 }
