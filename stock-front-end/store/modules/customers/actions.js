@@ -1,4 +1,9 @@
-import { fetchCustomers, postCustomer, putCustomer } from '~/api/customers'
+import {
+  fetchCustomers,
+  postCustomer,
+  putCustomer,
+  deleteCustomer
+} from '~/api/customers'
 
 const getCustomers = context => {
   fetchCustomers().then(response => {
@@ -6,7 +11,7 @@ const getCustomers = context => {
   })
 }
 
-const addNewcustomer = (context, payload) => {
+const createCustomer = (context, payload) => {
   return new Promise(function(resolve, reject) {
     postCustomer(payload)
       .then(response => {
@@ -26,7 +31,22 @@ const updateCustomer = (context, payload) => {
     putCustomer(payload)
       .then(response => {
         if (response.data) {
-          context.commit('UPDATED_CUSTOMER', response.data)
+          context.commit('UPDATED_CUSTOMER', payload)
+        }
+        resolve(response)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
+
+const removeCustomer = (context, id) => {
+  return new Promise(function(resolve, reject) {
+    deleteCustomer(id)
+      .then(response => {
+        if (response.data) {
+          context.commit('DELETED_CUSTOMER', id)
         }
         resolve(response)
       })
@@ -38,6 +58,7 @@ const updateCustomer = (context, payload) => {
 
 export default {
   getCustomers,
-  addNewcustomer,
-  updateCustomer
+  createCustomer,
+  updateCustomer,
+  removeCustomer
 }

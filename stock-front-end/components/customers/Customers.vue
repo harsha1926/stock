@@ -13,12 +13,21 @@
             :submitFunction="submitFunction"
           />
           <v-flex hidden-xs-only>
-            <v-btn fab color="primary" icon small @click="addCustomer()">
+            <v-btn fab color="primary" icon small @click="openAddCustomerDialog()">
               <v-icon>add</v-icon>
             </v-btn>
           </v-flex>
           <v-flex hidden-sm-and-up>
-            <v-btn fab color="primary" bottom right fixed icon small @click="addCustomer()">
+            <v-btn
+              fab
+              color="primary"
+              bottom
+              right
+              fixed
+              icon
+              small
+              @click="openAddCustomerDialog()"
+            >
               <v-icon>add</v-icon>
             </v-btn>
           </v-flex>
@@ -62,14 +71,14 @@
                       </v-list-tile>
                       <v-list-tile>
                         <v-list-tile-avatar>
-                          <v-icon color="primary" @click="updateCustomer(customer)">edit</v-icon>
+                          <v-icon color="primary" @click="openEditCustomerDialog(customer)">edit</v-icon>
                         </v-list-tile-avatar>
                       </v-list-tile>
                       <v-list-tile>
                         <v-list-tile-avatar>
                           <v-icon
                             color="primary"
-                            @click="deleteThisCustomer(customer)"
+                            @click="openDeleteCustomerWarningDialog(customer)"
                             v-on="on"
                           >delete</v-icon>
                         </v-list-tile-avatar>
@@ -113,8 +122,7 @@ export default {
       submitLabel: null,
       selectedCustomer: null,
       submitFunction: null,
-      deleteWarningDialog: false,
-      update: false
+      deleteWarningDialog: false
     }
   },
   computed: {
@@ -125,11 +133,12 @@ export default {
   methods: {
     ...mapActions({
       getCustomers: 'customers/getCustomers',
-      addNewCustomerAction: 'customers/addNewCustomer',
-      updateCustomerAction: 'customers/updateCustomer'
+      createCustomer: 'customers/createCustomer',
+      updateCustomer: 'customers/updateCustomer',
+      removeCustomer: 'customers/removeCustomer'
     }),
     addNewCustomer: function(payload) {
-      this.addNewCustomerAction(payload)
+      this.createCustomer(payload)
         .then(response => {
           if (response.data) {
             this.snackbarMessage =
@@ -142,12 +151,12 @@ export default {
           console.error(error)
         })
     },
-    deleteThisCustomer: function(customer) {
+    openDeleteCustomerWarningDialog: function(customer) {
       this.selectedCustomer = customer
       this.deleteWarningDialog = true
     },
     deleteSelectedCustomer: function() {
-      deleteCustomer(this.selectedCustomer.id)
+      this.removeCustomer(this.selectedCustomer.id)
         .then(response => {
           if (response.data) {
             this.snackbarMessage =
@@ -163,7 +172,7 @@ export default {
         })
     },
     updateSelectedCustomer: function(payload) {
-      this.updateCustomerAction(payload)
+      this.updateCustomer(payload)
         .then(response => {
           if (response.data) {
             this.snackbarMessage =
@@ -176,14 +185,14 @@ export default {
           console.error(error)
         })
     },
-    addCustomer: function() {
+    openAddCustomerDialog: function() {
       this.showDialog = true
       this.dialogHeader = this.$t('app.actions.form.add_new_customer')
       this.selectedCustomer = null
       this.submitLabel = this.$t('app.actions.form.save')
       this.submitFunction = this.addNewCustomer
     },
-    updateCustomer: function(customer) {
+    openEditCustomerDialog: function(customer) {
       this.showDialog = true
       this.dialogHeader = this.$t('app.actions.form.update_customer')
       this.selectedCustomer = customer
