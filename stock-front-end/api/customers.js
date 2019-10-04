@@ -4,7 +4,7 @@ const fetchCustomers = () => {
   return axios.get(`/api/customers`)
 }
 
-const getCustomer = id => {
+const fetchCustomer = id => {
   return axios.get(`/api/customers/${id}`)
 }
 const postCustomer = payload => {
@@ -19,7 +19,7 @@ const putCustomer = payload => {
 
 export {
   fetchCustomers,
-  getCustomer,
+  fetchCustomer,
   postCustomer,
   deleteCustomer,
   putCustomer
