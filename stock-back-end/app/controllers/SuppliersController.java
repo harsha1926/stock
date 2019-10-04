@@ -123,7 +123,6 @@ public class SuppliersController extends Controller {
         String state = requestJson.get("state").asText();
         String city = requestJson.get("city").asText();
         String postalCode = requestJson.get("postalCode").asText();
-
         return this.supplierRepository.updateSupplier(id, name, reference, address1, address2, phone, email, country, state, city, postalCode).thenApplyAsync(isUpdated -> {
             return ok(Json.toJson(isUpdated));
         }, httpExecutionContext.current()).exceptionally(e -> {

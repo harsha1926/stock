@@ -80,8 +80,7 @@ public class ProductsController extends Controller {
         String name = requestJson.get("name").asText();
         String category =requestJson.get("category").asText();
 
-
-        return this.productsRepository.updateProduct(id,name, category).thenApplyAsync(isUpdated -> {
+        return this.productsRepository.updateProduct(id, name, category ).thenApplyAsync(isUpdated -> {
             return ok(Json.toJson(isUpdated));
         }, httpExecutionContext.current()).exceptionally(e -> {
             e.printStackTrace();
