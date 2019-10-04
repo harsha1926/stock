@@ -14,12 +14,21 @@
               :submitFunction="submitFunction"
             />
             <v-flex hidden-xs-only>
-              <v-btn fab color="primary" @click="addProduct()" small>
+              <v-btn fab color="primary" @click="openAddProductDialog()" small>
                 <v-icon>add</v-icon>
               </v-btn>
             </v-flex>
             <v-flex hidden-sm-and-up>
-              <v-btn fab color="primary" @click="addProduct()" bottom right fixed icon small>
+              <v-btn
+                fab
+                color="primary"
+                @click="openAddProductDialog()"
+                bottom
+                right
+                fixed
+                icon
+                small
+              >
                 <v-icon>add</v-icon>
               </v-btn>
             </v-flex>
@@ -51,14 +60,14 @@
                       <v-list>
                         <v-list-tile key="edit">
                           <v-list-tile-avatar>
-                            <v-icon color="primary" @click="updateProduct(product)">edit</v-icon>
+                            <v-icon color="primary" @click="openEditProductDialog(product)">edit</v-icon>
                           </v-list-tile-avatar>
                         </v-list-tile>
                         <v-list-tile key="delete">
                           <v-list-tile-avatar>
                             <v-icon
                               color="primary"
-                              @click="deleteThisProduct(product)"
+                              @click="openDeleteProductWarningDialog(product)"
                               v-on="on"
                             >delete</v-icon>
                           </v-list-tile-avatar>
@@ -85,7 +94,6 @@
   </v-container>
 </template>
 <script>
-import { deleteProduct } from '~/api/products'
 import ProductForm from './ProductForm'
 import { mapGetters, mapActions } from 'vuex'
 export default {
@@ -116,11 +124,12 @@ export default {
   methods: {
     ...mapActions({
       getProducts: 'products/getProducts',
-      addNewProductAction: 'products/addNewProduct',
-      updateProductAction: 'products/updateProduct'
+      createProduct: 'products/createProduct',
+      updateProduct: 'products/updateProduct',
+      removeProduct: 'products/removeProduct'
     }),
     addNewProduct: function(payload) {
-      this.addNewProductAction(payload)
+      this.createProduct(payload)
         .then(response => {
           if (response.data) {
             this.snackbarMessage =
@@ -133,12 +142,12 @@ export default {
           console.error(error)
         })
     },
-    deleteThisProduct: function(product) {
+    openDeleteProductWarningDialog: function(product) {
       this.selectedProduct = product
       this.deleteWarningDialog = true
     },
     deleteSelectedProduct: function() {
-      deleteProduct(this.selectedProduct.id)
+      this.removeProduct(this.selectedProduct.id)
         .then(response => {
           if (response.data) {
             this.snackbarMessage =
@@ -152,7 +161,7 @@ export default {
         })
     },
     updateSelectedProduct: function(payload) {
-      this.updateProductAction(payload)
+      this.updateProduct(payload)
         .then(response => {
           if (response.data) {
             this.snackbarMessage =
@@ -165,15 +174,14 @@ export default {
           console.error(error)
         })
     },
-
-    addProduct: function() {
+    openAddProductDialog: function() {
       this.showDialog = true
       this.dialogHeader = 'Add new Product'
       this.selectedProduct = null
       this.submitLabel = 'Save'
       this.submitFunction = this.addNewProduct
     },
-    updateProduct: function(product) {
+    openEditProductDialog: function(product) {
       this.showDialog = true
       this.dialogHeader = 'Edit Product'
       this.selectedProduct = product

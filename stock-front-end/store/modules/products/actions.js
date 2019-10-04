@@ -1,4 +1,10 @@
-import { fetchProducts, postProduct, putProduct } from '~/api/products'
+import {
+  fetchProducts,
+  fetchSupplier,
+  postProduct,
+  putProduct,
+  deleteProduct
+} from '~/api/products'
 
 const getProducts = context => {
   fetchProducts().then(response => {
@@ -6,7 +12,13 @@ const getProducts = context => {
   })
 }
 
-const addNewProduct = (context, payload) => {
+const getProduct = (context, id) => {
+  fetchProduct(id).then(response => {
+    context.commit('PRODUCT_FETCHED', response.data)
+  })
+}
+
+const createProduct = (context, payload) => {
   return new Promise(function(resolve, reject) {
     postProduct(payload)
       .then(response => {
@@ -26,7 +38,22 @@ const updateProduct = (context, payload) => {
     putProduct(payload)
       .then(response => {
         if (response.data) {
-          context.commit('UPDATED_PRODUCT', response.data)
+          context.commit('UPDATED_PRODUCT', payload)
+        }
+        resolve(response)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
+
+const removeProduct = (context, id) => {
+  return new Promise(function(resolve, reject) {
+    deleteProduct(id)
+      .then(response => {
+        if (response.data) {
+          context.commit('DELETED_PRODUCT', id)
         }
         resolve(response)
       })
@@ -38,6 +65,8 @@ const updateProduct = (context, payload) => {
 
 export default {
   getProducts,
-  addNewProduct,
-  updateProduct
+  getSupplier,
+  createProduct,
+  updateProduct,
+  removeProduct
 }
