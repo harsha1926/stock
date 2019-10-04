@@ -104,7 +104,6 @@
   </v-container>
 </template>
 <script>
-import { deleteCustomer } from '~/api/customers'
 import CustomerForm from './CustomerForm'
 import { mapGetters, mapActions } from 'vuex'
 export default {

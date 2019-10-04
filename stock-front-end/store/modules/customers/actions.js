@@ -1,5 +1,6 @@
 import {
   fetchCustomers,
+  fetchCustomer,
   postCustomer,
   putCustomer,
   deleteCustomer
@@ -8,6 +9,12 @@ import {
 const getCustomers = context => {
   fetchCustomers().then(response => {
     context.commit('CUSTOMERS_LIST_FETCHED', response.data)
+  })
+}
+
+const getCustomer = (context, id) => {
+  fetchCustomer(id).then(response => {
+    context.commit('CUSTOMER_FETCHED', response.data)
   })
 }
 
@@ -58,6 +65,7 @@ const removeCustomer = (context, id) => {
 
 export default {
   getCustomers,
+  getCustomer,
   createCustomer,
   updateCustomer,
   removeCustomer
