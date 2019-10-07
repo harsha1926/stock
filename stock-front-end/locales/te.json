@@ -38,7 +38,8 @@
         "city": "నగరం",
         "postal_code": "పోస్టల్ కోడ్",
         "phone": "ఫోను నంబరు",
-        "email": "ఇమెయిల్"
+        "email": "ఇమెయిల్",
+        "category": "వర్గం"
       },
       "validations": {
         "required": "కావలసిన సమాచారం",

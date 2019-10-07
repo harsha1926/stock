@@ -13,6 +13,7 @@ public class StockMySqlModule extends AbstractModule {
         bind(SupplierTransactionRepository.class).to(SupplierTransactionRepositoryImpl.class).asEagerSingleton();
         bind(FinancialTransactionDetailsRepository.class).to(FinancialTransactionDetailsRepositoryImpl.class).asEagerSingleton();
         bind(SuppliersFinancialTransactionRepository.class).to(SuppliersFinancialTransactionRepositoryImpl.class).asEagerSingleton();
+        bind(StockParcelRepository.class).to(StockParcelRepositoryImpl.class).asEagerSingleton();
 
     }
 }

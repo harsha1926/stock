@@ -62,6 +62,16 @@ GET    /financialTransactionDetails                    controllers.FinancialTran
 
 GET    /supplierFinancialTransaction                    controllers.SuppliersFinancialTransactionController.index
 
+# StockParcel data
+
+GET    /stockParcel                    controllers.StockParcelController.index
+GET    /stockParcel/:id                controllers.StockParcelController.read(id: Long)
++nocsrf
+POST   /stockParcel                    controllers.StockParcelController.create(request: Request)
++nocsrf
+DELETE /stockParcel/:id                controllers.StockParcelController.delete(id: Long)
++nocsrf
+PUT   /stockParcel/:id                controllers.StockParcelController.update(request: Request, id: Long)
 
 
 

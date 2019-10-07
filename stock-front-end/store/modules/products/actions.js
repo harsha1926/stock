@@ -65,7 +65,7 @@ const removeProduct = (context, id) => {
 
 export default {
   getProducts,
-  getSupplier,
+  getProduct,
   createProduct,
   updateProduct,
   removeProduct

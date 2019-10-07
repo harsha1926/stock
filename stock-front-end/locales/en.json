@@ -39,7 +39,8 @@
         "city": "City",
         "postal_code": "Postal Code",
         "phone": "Phone Number",
-        "email": "Email"
+        "email": "Email",
+        "category": "Category"
       },
       "validations": {
         "required": "Required Field",

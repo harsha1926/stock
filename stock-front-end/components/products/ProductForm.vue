@@ -10,10 +10,18 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-text-field label="Name" v-model="name" :rules="[rules.required]"></v-text-field>
+                  <v-text-field
+                    :label="$t('app.actions.form.name')"
+                    v-model="name"
+                    :rules="[rules.required]"
+                  ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field label="Category" v-model="category" :rules="[rules.required]"></v-text-field>
+                  <v-text-field
+                    :label="$t('app.actions.form.category')"
+                    v-model="category"
+                    :rules="[rules.required]"
+                  ></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
