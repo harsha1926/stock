@@ -100,6 +100,11 @@ export default {
           icon: 'group',
           text: 'app.actions.supplier_transactions.label',
           link: '/supplierTransactions'
+        },
+        {
+          icon: 'group',
+          text: 'app.actions.stock_parcel',
+          link: '/stockParcel'
         }
       ]
     }

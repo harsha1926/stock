@@ -12,6 +12,7 @@
       "suppliers": "Suppliers",
       "customers": "Customers",
       "products": "Products",
+      "stock_parcel": "Stock Parcels",
       "supplier_transactions": {
         "label": "Supplier Transactions",
         "supplier_transaction_create_title": "Create new supplier transaction",
