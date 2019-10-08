@@ -64,14 +64,14 @@ GET    /supplierFinancialTransaction                    controllers.SuppliersFin
 
 # StockParcel data
 
-GET    /stockParcel                    controllers.StockParcelController.index
-GET    /stockParcel/:id                controllers.StockParcelController.read(id: Long)
+GET    /stockParcels                    controllers.StockParcelController.index
+GET    /stockParcels/:id                controllers.StockParcelController.read(id: Long)
 +nocsrf
-POST   /stockParcel                    controllers.StockParcelController.create(request: Request)
+POST   /stockParcels                   controllers.StockParcelController.create(request: Request)
 +nocsrf
-DELETE /stockParcel/:id                controllers.StockParcelController.delete(id: Long)
+DELETE /stockParcels/:id                controllers.StockParcelController.delete(id: Long)
 +nocsrf
-PUT   /stockParcel/:id                controllers.StockParcelController.update(request: Request, id: Long)
+PUT   /stockParcels/:id                controllers.StockParcelController.update(request: Request, id: Long)
 
 
 
