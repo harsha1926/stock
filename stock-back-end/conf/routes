@@ -73,5 +73,14 @@ DELETE /stockParcels/:id                controllers.StockParcelController.delete
 +nocsrf
 PUT   /stockParcels/:id                controllers.StockParcelController.update(request: Request, id: Long)
 
+# Parcel Details data
 
+GET    /parcelDetails                    controllers.ParcelDetailsController.index
+GET    /parcelDetails/:id                controllers.ParcelDetailsController.read(id: Long)
++nocsrf
+POST   /parcelDetails                   controllers.ParcelDetailsController.create(request: Request)
++nocsrf
+DELETE /parcelDetails/:id                controllers.ParcelDetailsController.delete(id: Long)
++nocsrf
+PUT   /parcelDetails/:id                controllers.ParcelDetailsController.update(request: Request, id: Long)
 

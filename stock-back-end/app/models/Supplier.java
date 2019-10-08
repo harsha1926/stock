@@ -21,9 +21,6 @@ public class Supplier {
     private String modified_by;
     private Date modified_on;
 
-
-
-
     public Supplier(Long id, String name, String reference, String phone, String address1, String address2, String email, String country, String state, String city, String postalCode, String modified_by, Date modified_on ) {
         this.id = id;
         this.name = name;
