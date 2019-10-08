@@ -104,7 +104,7 @@ export default {
         {
           icon: 'group',
           text: 'app.actions.stock_parcel',
-          link: '/stockParcel'
+          link: '/stockParcels'
         }
       ]
     }
