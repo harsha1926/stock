@@ -3,6 +3,7 @@ import appModule from './modules/app'
 import suppliersModule from './modules/suppliers'
 import customersModule from './modules/customers'
 import productsModule from './modules/products'
+import stockParcelsModule from './modules/stockParcels'
 
 const createStore = () => {
   return new Vuex.Store({
@@ -11,7 +12,8 @@ const createStore = () => {
       app: appModule,
       suppliers: suppliersModule,
       customers: customersModule,
-      products: productsModule
+      products: productsModule,
+      stockParcels: stockParcelsModule
     }
   })
 }
