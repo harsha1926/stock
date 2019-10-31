@@ -4,6 +4,7 @@ import models.ParcelDetail;
 import play.db.Database;
 import play.db.NamedDatabase;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.concurrent.CompletionException;
 @Singleton
 public class ParcelDetailsRepositoryImpl implements ParcelDetailsRepository {
     private Database database;
+    @Inject
     public ParcelDetailsRepositoryImpl(@NamedDatabase("stock") Database database) {
         this.database = database;
     }
